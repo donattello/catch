@@ -1,4 +1,4 @@
-<!-- if you need user information, just put them into the $_SESSION variable and output them here -->
+<!-- martin -->
 
 <?php $user = UsersQuery::create()->findPK($_SESSION["user_id"]); ?>
 
