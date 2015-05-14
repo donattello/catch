@@ -10,6 +10,7 @@ use Map\UsersTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
+use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -23,15 +24,23 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUsersQuery orderByUserName($order = Criteria::ASC) Order by the user_name column
  * @method     ChildUsersQuery orderByUserPasswordHash($order = Criteria::ASC) Order by the user_password_hash column
  * @method     ChildUsersQuery orderByUserEmail($order = Criteria::ASC) Order by the user_email column
+ * @method     ChildUsersQuery orderByBio($order = Criteria::ASC) Order by the bio column
  *
  * @method     ChildUsersQuery groupByUserId() Group by the user_id column
  * @method     ChildUsersQuery groupByUserName() Group by the user_name column
  * @method     ChildUsersQuery groupByUserPasswordHash() Group by the user_password_hash column
  * @method     ChildUsersQuery groupByUserEmail() Group by the user_email column
+ * @method     ChildUsersQuery groupByBio() Group by the bio column
  *
  * @method     ChildUsersQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildUsersQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     ChildUsersQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ *
+ * @method     ChildUsersQuery leftJoinEvents($relationAlias = null) Adds a LEFT JOIN clause to the query using the Events relation
+ * @method     ChildUsersQuery rightJoinEvents($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Events relation
+ * @method     ChildUsersQuery innerJoinEvents($relationAlias = null) Adds a INNER JOIN clause to the query using the Events relation
+ *
+ * @method     \EventsQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildUsers findOne(ConnectionInterface $con = null) Return the first ChildUsers matching the query
  * @method     ChildUsers findOneOrCreate(ConnectionInterface $con = null) Return the first ChildUsers matching the query, or a new ChildUsers object populated from the query conditions when no match is found
@@ -39,7 +48,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUsers findOneByUserId(int $user_id) Return the first ChildUsers filtered by the user_id column
  * @method     ChildUsers findOneByUserName(string $user_name) Return the first ChildUsers filtered by the user_name column
  * @method     ChildUsers findOneByUserPasswordHash(string $user_password_hash) Return the first ChildUsers filtered by the user_password_hash column
- * @method     ChildUsers findOneByUserEmail(string $user_email) Return the first ChildUsers filtered by the user_email column *
+ * @method     ChildUsers findOneByUserEmail(string $user_email) Return the first ChildUsers filtered by the user_email column
+ * @method     ChildUsers findOneByBio(string $bio) Return the first ChildUsers filtered by the bio column *
 
  * @method     ChildUsers requirePk($key, ConnectionInterface $con = null) Return the ChildUsers by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUsers requireOne(ConnectionInterface $con = null) Return the first ChildUsers matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -48,12 +58,14 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUsers requireOneByUserName(string $user_name) Return the first ChildUsers filtered by the user_name column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUsers requireOneByUserPasswordHash(string $user_password_hash) Return the first ChildUsers filtered by the user_password_hash column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUsers requireOneByUserEmail(string $user_email) Return the first ChildUsers filtered by the user_email column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUsers requireOneByBio(string $bio) Return the first ChildUsers filtered by the bio column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildUsers[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildUsers objects based on current ModelCriteria
  * @method     ChildUsers[]|ObjectCollection findByUserId(int $user_id) Return ChildUsers objects filtered by the user_id column
  * @method     ChildUsers[]|ObjectCollection findByUserName(string $user_name) Return ChildUsers objects filtered by the user_name column
  * @method     ChildUsers[]|ObjectCollection findByUserPasswordHash(string $user_password_hash) Return ChildUsers objects filtered by the user_password_hash column
  * @method     ChildUsers[]|ObjectCollection findByUserEmail(string $user_email) Return ChildUsers objects filtered by the user_email column
+ * @method     ChildUsers[]|ObjectCollection findByBio(string $bio) Return ChildUsers objects filtered by the bio column
  * @method     ChildUsers[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -146,7 +158,7 @@ abstract class UsersQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT user_id, user_name, user_password_hash, user_email FROM users WHERE user_id = :p0';
+        $sql = 'SELECT user_id, user_name, user_password_hash, user_email, bio FROM users WHERE user_id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -362,6 +374,108 @@ abstract class UsersQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(UsersTableMap::COL_USER_EMAIL, $userEmail, $comparison);
+    }
+
+    /**
+     * Filter the query on the bio column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByBio('fooValue');   // WHERE bio = 'fooValue'
+     * $query->filterByBio('%fooValue%'); // WHERE bio LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $bio The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildUsersQuery The current query, for fluid interface
+     */
+    public function filterByBio($bio = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($bio)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $bio)) {
+                $bio = str_replace('*', '%', $bio);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(UsersTableMap::COL_BIO, $bio, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \Events object
+     *
+     * @param \Events|ObjectCollection $events the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildUsersQuery The current query, for fluid interface
+     */
+    public function filterByEvents($events, $comparison = null)
+    {
+        if ($events instanceof \Events) {
+            return $this
+                ->addUsingAlias(UsersTableMap::COL_USER_ID, $events->getEventUserId(), $comparison);
+        } elseif ($events instanceof ObjectCollection) {
+            return $this
+                ->useEventsQuery()
+                ->filterByPrimaryKeys($events->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByEvents() only accepts arguments of type \Events or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Events relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildUsersQuery The current query, for fluid interface
+     */
+    public function joinEvents($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Events');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Events');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Events relation Events object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \EventsQuery A secondary query class using the current class as primary query
+     */
+    public function useEventsQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinEvents($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Events', '\EventsQuery');
     }
 
     /**

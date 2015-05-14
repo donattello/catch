@@ -6,8 +6,13 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Base\\Events' => $baseDir . '/generated-classes/Base/Events.php',
+    'Base\\EventsQuery' => $baseDir . '/generated-classes/Base/EventsQuery.php',
     'Base\\Users' => $baseDir . '/generated-classes/Base/Users.php',
     'Base\\UsersQuery' => $baseDir . '/generated-classes/Base/UsersQuery.php',
+    'Events' => $baseDir . '/generated-classes/Events.php',
+    'EventsQuery' => $baseDir . '/generated-classes/EventsQuery.php',
+    'Map\\EventsTableMap' => $baseDir . '/generated-classes/Map/EventsTableMap.php',
     'Map\\UsersTableMap' => $baseDir . '/generated-classes/Map/UsersTableMap.php',
     'Users' => $baseDir . '/generated-classes/Users.php',
     'UsersQuery' => $baseDir . '/generated-classes/UsersQuery.php',

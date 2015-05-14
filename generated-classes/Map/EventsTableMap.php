@@ -2,8 +2,8 @@
 
 namespace Map;
 
-use \Users;
-use \UsersQuery;
+use \Events;
+use \EventsQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'users' table.
+ * This class defines the structure of the 'events' table.
  *
  *
  *
@@ -26,7 +26,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class UsersTableMap extends TableMap
+class EventsTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -34,7 +34,7 @@ class UsersTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.UsersTableMap';
+    const CLASS_NAME = '.Map.EventsTableMap';
 
     /**
      * The default database name for this class
@@ -44,22 +44,22 @@ class UsersTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'users';
+    const TABLE_NAME = 'events';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Users';
+    const OM_CLASS = '\\Events';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Users';
+    const CLASS_DEFAULT = 'Events';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 4;
 
     /**
      * The number of lazy-loaded columns
@@ -69,32 +69,27 @@ class UsersTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /**
-     * the column name for the user_id field
+     * the column name for the id field
      */
-    const COL_USER_ID = 'users.user_id';
+    const COL_ID = 'events.id';
 
     /**
-     * the column name for the user_name field
+     * the column name for the event_user_id field
      */
-    const COL_USER_NAME = 'users.user_name';
+    const COL_EVENT_USER_ID = 'events.event_user_id';
 
     /**
-     * the column name for the user_password_hash field
+     * the column name for the event_type field
      */
-    const COL_USER_PASSWORD_HASH = 'users.user_password_hash';
+    const COL_EVENT_TYPE = 'events.event_type';
 
     /**
-     * the column name for the user_email field
+     * the column name for the event_date field
      */
-    const COL_USER_EMAIL = 'users.user_email';
-
-    /**
-     * the column name for the bio field
-     */
-    const COL_BIO = 'users.bio';
+    const COL_EVENT_DATE = 'events.event_date';
 
     /**
      * The default string format for model objects of the related table
@@ -108,11 +103,11 @@ class UsersTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('UserId', 'UserName', 'UserPasswordHash', 'UserEmail', 'Bio', ),
-        self::TYPE_CAMELNAME     => array('userId', 'userName', 'userPasswordHash', 'userEmail', 'bio', ),
-        self::TYPE_COLNAME       => array(UsersTableMap::COL_USER_ID, UsersTableMap::COL_USER_NAME, UsersTableMap::COL_USER_PASSWORD_HASH, UsersTableMap::COL_USER_EMAIL, UsersTableMap::COL_BIO, ),
-        self::TYPE_FIELDNAME     => array('user_id', 'user_name', 'user_password_hash', 'user_email', 'bio', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id', 'EventUserId', 'EventType', 'EventDate', ),
+        self::TYPE_CAMELNAME     => array('id', 'eventUserId', 'eventType', 'eventDate', ),
+        self::TYPE_COLNAME       => array(EventsTableMap::COL_ID, EventsTableMap::COL_EVENT_USER_ID, EventsTableMap::COL_EVENT_TYPE, EventsTableMap::COL_EVENT_DATE, ),
+        self::TYPE_FIELDNAME     => array('id', 'event_user_id', 'event_type', 'event_date', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -122,11 +117,11 @@ class UsersTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('UserId' => 0, 'UserName' => 1, 'UserPasswordHash' => 2, 'UserEmail' => 3, 'Bio' => 4, ),
-        self::TYPE_CAMELNAME     => array('userId' => 0, 'userName' => 1, 'userPasswordHash' => 2, 'userEmail' => 3, 'bio' => 4, ),
-        self::TYPE_COLNAME       => array(UsersTableMap::COL_USER_ID => 0, UsersTableMap::COL_USER_NAME => 1, UsersTableMap::COL_USER_PASSWORD_HASH => 2, UsersTableMap::COL_USER_EMAIL => 3, UsersTableMap::COL_BIO => 4, ),
-        self::TYPE_FIELDNAME     => array('user_id' => 0, 'user_name' => 1, 'user_password_hash' => 2, 'user_email' => 3, 'bio' => 4, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'EventUserId' => 1, 'EventType' => 2, 'EventDate' => 3, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'eventUserId' => 1, 'eventType' => 2, 'eventDate' => 3, ),
+        self::TYPE_COLNAME       => array(EventsTableMap::COL_ID => 0, EventsTableMap::COL_EVENT_USER_ID => 1, EventsTableMap::COL_EVENT_TYPE => 2, EventsTableMap::COL_EVENT_DATE => 3, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'event_user_id' => 1, 'event_type' => 2, 'event_date' => 3, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -139,18 +134,17 @@ class UsersTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('users');
-        $this->setPhpName('Users');
+        $this->setName('events');
+        $this->setPhpName('Events');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Users');
+        $this->setClassName('\\Events');
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('user_id', 'UserId', 'INTEGER', true, null, null);
-        $this->addColumn('user_name', 'UserName', 'VARCHAR', true, 64, null);
-        $this->addColumn('user_password_hash', 'UserPasswordHash', 'VARCHAR', true, 255, null);
-        $this->addColumn('user_email', 'UserEmail', 'VARCHAR', true, 64, null);
-        $this->addColumn('bio', 'Bio', 'LONGVARCHAR', true, null, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('event_user_id', 'EventUserId', 'INTEGER', 'users', 'user_id', true, null, null);
+        $this->addColumn('event_type', 'EventType', 'VARCHAR', true, 20, null);
+        $this->addColumn('event_date', 'EventDate', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
     } // initialize()
 
     /**
@@ -158,13 +152,13 @@ class UsersTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Events', '\\Events', RelationMap::ONE_TO_MANY, array (
+        $this->addRelation('Users', '\\Users', RelationMap::MANY_TO_ONE, array (
   0 =>
   array (
     0 => ':event_user_id',
     1 => ':user_id',
   ),
-), null, null, 'Eventss', false);
+), null, null, null, false);
     } // buildRelations()
 
     /**
@@ -183,11 +177,11 @@ class UsersTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)];
+        return (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -207,7 +201,7 @@ class UsersTableMap extends TableMap
         return (int) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 0 + $offset
-                : self::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
         ];
     }
 
@@ -224,7 +218,7 @@ class UsersTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? UsersTableMap::CLASS_DEFAULT : UsersTableMap::OM_CLASS;
+        return $withPrefix ? EventsTableMap::CLASS_DEFAULT : EventsTableMap::OM_CLASS;
     }
 
     /**
@@ -238,22 +232,22 @@ class UsersTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Users object, last column rank)
+     * @return array           (Events object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = UsersTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = UsersTableMap::getInstanceFromPool($key))) {
+        $key = EventsTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = EventsTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + UsersTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + EventsTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = UsersTableMap::OM_CLASS;
-            /** @var Users $obj */
+            $cls = EventsTableMap::OM_CLASS;
+            /** @var Events $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            UsersTableMap::addInstanceToPool($obj, $key);
+            EventsTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -276,18 +270,18 @@ class UsersTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = UsersTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = UsersTableMap::getInstanceFromPool($key))) {
+            $key = EventsTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = EventsTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var Users $obj */
+                /** @var Events $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                UsersTableMap::addInstanceToPool($obj, $key);
+                EventsTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -308,17 +302,15 @@ class UsersTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(UsersTableMap::COL_USER_ID);
-            $criteria->addSelectColumn(UsersTableMap::COL_USER_NAME);
-            $criteria->addSelectColumn(UsersTableMap::COL_USER_PASSWORD_HASH);
-            $criteria->addSelectColumn(UsersTableMap::COL_USER_EMAIL);
-            $criteria->addSelectColumn(UsersTableMap::COL_BIO);
+            $criteria->addSelectColumn(EventsTableMap::COL_ID);
+            $criteria->addSelectColumn(EventsTableMap::COL_EVENT_USER_ID);
+            $criteria->addSelectColumn(EventsTableMap::COL_EVENT_TYPE);
+            $criteria->addSelectColumn(EventsTableMap::COL_EVENT_DATE);
         } else {
-            $criteria->addSelectColumn($alias . '.user_id');
-            $criteria->addSelectColumn($alias . '.user_name');
-            $criteria->addSelectColumn($alias . '.user_password_hash');
-            $criteria->addSelectColumn($alias . '.user_email');
-            $criteria->addSelectColumn($alias . '.bio');
+            $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.event_user_id');
+            $criteria->addSelectColumn($alias . '.event_type');
+            $criteria->addSelectColumn($alias . '.event_date');
         }
     }
 
@@ -331,7 +323,7 @@ class UsersTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(UsersTableMap::DATABASE_NAME)->getTable(UsersTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(EventsTableMap::DATABASE_NAME)->getTable(EventsTableMap::TABLE_NAME);
     }
 
     /**
@@ -339,16 +331,16 @@ class UsersTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(UsersTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(UsersTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new UsersTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(EventsTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(EventsTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new EventsTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a Users or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Events or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Users object or primary key or array of primary keys
+     * @param mixed               $values Criteria or Events object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -359,27 +351,27 @@ class UsersTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(UsersTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(EventsTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Users) { // it's a model object
+        } elseif ($values instanceof \Events) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(UsersTableMap::DATABASE_NAME);
-            $criteria->add(UsersTableMap::COL_USER_ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(EventsTableMap::DATABASE_NAME);
+            $criteria->add(EventsTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
-        $query = UsersQuery::create()->mergeWith($criteria);
+        $query = EventsQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            UsersTableMap::clearInstancePool();
+            EventsTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                UsersTableMap::removeInstanceFromPool($singleval);
+                EventsTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -387,20 +379,20 @@ class UsersTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the users table.
+     * Deletes all rows from the events table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return UsersQuery::create()->doDeleteAll($con);
+        return EventsQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Users or Criteria object.
+     * Performs an INSERT on the database, given a Events or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Users object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or Events object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -409,22 +401,22 @@ class UsersTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(UsersTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(EventsTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Users object
+            $criteria = $criteria->buildCriteria(); // build Criteria from Events object
         }
 
-        if ($criteria->containsKey(UsersTableMap::COL_USER_ID) && $criteria->keyContainsValue(UsersTableMap::COL_USER_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.UsersTableMap::COL_USER_ID.')');
+        if ($criteria->containsKey(EventsTableMap::COL_ID) && $criteria->keyContainsValue(EventsTableMap::COL_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.EventsTableMap::COL_ID.')');
         }
 
 
         // Set the correct dbName
-        $query = UsersQuery::create()->mergeWith($criteria);
+        $query = EventsQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -433,7 +425,7 @@ class UsersTableMap extends TableMap
         });
     }
 
-} // UsersTableMap
+} // EventsTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-UsersTableMap::buildTableMap();
+EventsTableMap::buildTableMap();

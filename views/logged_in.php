@@ -1,9 +1,14 @@
 <!-- if you need user information, just put them into the $_SESSION variable and output them here -->
 
 <?php
-
 	$user = UsersQuery::create()->findPK($_SESSION["user_id"]);
-	var_dump($user->toArray());
+	var_dump($user);
+	echo "<br>";
+
+	foreach($user->getEventss() as $event) {
+		var_dump($event->toArray());
+		echo "<br>";
+	}
 ?>
 
 Hey, <?php echo $_SESSION['user_name']; ?>. You are logged in.

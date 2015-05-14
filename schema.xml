@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <database name="default" defaultIdMethod="native" defaultPhpNamingMethod="underscore">
+  <table name="events" idMethod="native" phpName="Events">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="event_user_id" phpName="EventUserId" type="INTEGER" required="true"/>
+    <column name="event_type" phpName="EventType" type="VARCHAR" size="20" required="true"/>
+    <column name="event_date" phpName="EventDate" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+    <foreign-key foreignTable="users" name="events_ibfk_1">
+      <reference local="event_user_id" foreign="user_id"/>
+    </foreign-key>
+    <index name="event_user_id">
+      <index-column name="event_user_id"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
   <table name="users" idMethod="native" phpName="Users">
     <column name="user_id" phpName="UserId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="user_name" phpName="UserName" type="VARCHAR" size="64" required="true"/>
     <column name="user_password_hash" phpName="UserPasswordHash" type="VARCHAR" size="255" required="true"/>
     <column name="user_email" phpName="UserEmail" type="VARCHAR" size="64" required="true"/>
+    <column name="bio" phpName="Bio" type="LONGVARCHAR" required="true"/>
     <unique name="user_name">
       <unique-column name="user_name"/>
     </unique>
