@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database name="default" defaultIdMethod="native" defaultPhpNamingMethod="underscore">
+  <table name="users" idMethod="native" phpName="Users">
+    <column name="user_id" phpName="UserId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="user_name" phpName="UserName" type="VARCHAR" size="64" required="true"/>
+    <column name="user_password_hash" phpName="UserPasswordHash" type="VARCHAR" size="255" required="true"/>
+    <column name="user_email" phpName="UserEmail" type="VARCHAR" size="64" required="true"/>
+    <unique name="user_name">
+      <unique-column name="user_name"/>
+    </unique>
+    <unique name="user_email">
+      <unique-column name="user_email"/>
+    </unique>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+</database>
