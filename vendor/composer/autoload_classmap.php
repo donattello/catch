@@ -6,14 +6,14 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Base\\Events' => $baseDir . '/generated-classes/Base/Events.php',
-    'Base\\EventsQuery' => $baseDir . '/generated-classes/Base/EventsQuery.php',
-    'Base\\Users' => $baseDir . '/generated-classes/Base/Users.php',
-    'Base\\UsersQuery' => $baseDir . '/generated-classes/Base/UsersQuery.php',
-    'Events' => $baseDir . '/generated-classes/Events.php',
-    'EventsQuery' => $baseDir . '/generated-classes/EventsQuery.php',
-    'Map\\EventsTableMap' => $baseDir . '/generated-classes/Map/EventsTableMap.php',
-    'Map\\UsersTableMap' => $baseDir . '/generated-classes/Map/UsersTableMap.php',
-    'Users' => $baseDir . '/generated-classes/Users.php',
-    'UsersQuery' => $baseDir . '/generated-classes/UsersQuery.php',
+    'Base\\Event' => $baseDir . '/generated-classes/Base/Event.php',
+    'Base\\EventQuery' => $baseDir . '/generated-classes/Base/EventQuery.php',
+    'Base\\User' => $baseDir . '/generated-classes/Base/User.php',
+    'Base\\UserQuery' => $baseDir . '/generated-classes/Base/UserQuery.php',
+    'Event' => $baseDir . '/generated-classes/Event.php',
+    'EventQuery' => $baseDir . '/generated-classes/EventQuery.php',
+    'Map\\EventTableMap' => $baseDir . '/generated-classes/Map/EventTableMap.php',
+    'Map\\UserTableMap' => $baseDir . '/generated-classes/Map/UserTableMap.php',
+    'User' => $baseDir . '/generated-classes/User.php',
+    'UserQuery' => $baseDir . '/generated-classes/UserQuery.php',
 );

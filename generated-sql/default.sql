@@ -4,12 +4,12 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ---------------------------------------------------------------------
--- events
+-- event
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `events`;
+DROP TABLE IF EXISTS `event`;
 
-CREATE TABLE `events`
+CREATE TABLE `event`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `event_user_id` INTEGER NOT NULL,
@@ -17,23 +17,26 @@ CREATE TABLE `events`
     `event_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     INDEX `event_user_id` (`event_user_id`),
-    CONSTRAINT `events_ibfk_1`
+    CONSTRAINT `event_ibfk_1`
         FOREIGN KEY (`event_user_id`)
-        REFERENCES `users` (`user_id`)
+        REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- users
+-- user
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `user`;
 
-CREATE TABLE `users`
+CREATE TABLE `user`
 (
     `user_id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_name` VARCHAR(64) NOT NULL,
     `user_password_hash` VARCHAR(255) NOT NULL,
     `user_email` VARCHAR(64) NOT NULL,
+    `user_age` INTEGER NOT NULL,
+    `user_gender` VARCHAR(6) NOT NULL,
+    `user_activity` VARCHAR(120) NOT NULL,
     `bio` TEXT NOT NULL,
     PRIMARY KEY (`user_id`),
     UNIQUE INDEX `user_name` (`user_name`),
