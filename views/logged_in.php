@@ -1,5 +1,3 @@
-<!-- martin -->
-
 <?php $user = UsersQuery::create()->findPK($_SESSION["user_id"]); ?>
 
 <div>

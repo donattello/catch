@@ -1,16 +1,6 @@
+<?php include 'views/_templates/header.php'; ?>
 
 <?php
-//PHP 5.3.7 NEEDED
-require_once("libraries/password_compatibility_library.php");
-require_once("config/db.php");
-require_once("classes/Login.php");
-
-$autoloader = require 'vendor/autoload.php';
-$autoloader->add('generated-classes/');
-require_once ('generated-conf/config.php');
-
-$login = new Login();
-
 // ... ask if we are logged in here:
 if ($login->isUserLoggedIn() == true) {
     // the user is logged in. you can do whatever you want here.
@@ -23,3 +13,6 @@ if ($login->isUserLoggedIn() == true) {
     include("views/not_logged_in.php");
 }
 
+?>
+
+<?php include 'views/_templates/header.php'; ?>
