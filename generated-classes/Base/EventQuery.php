@@ -38,14 +38,18 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildEventQuery rightJoinUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the User relation
  * @method     ChildEventQuery innerJoinUser($relationAlias = null) Adds a INNER JOIN clause to the query using the User relation
  *
- * @method     \UserQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     ChildEventQuery leftJoinSport($relationAlias = null) Adds a LEFT JOIN clause to the query using the Sport relation
+ * @method     ChildEventQuery rightJoinSport($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Sport relation
+ * @method     ChildEventQuery innerJoinSport($relationAlias = null) Adds a INNER JOIN clause to the query using the Sport relation
+ *
+ * @method     \UserQuery|\SportQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildEvent findOne(ConnectionInterface $con = null) Return the first ChildEvent matching the query
  * @method     ChildEvent findOneOrCreate(ConnectionInterface $con = null) Return the first ChildEvent matching the query, or a new ChildEvent object populated from the query conditions when no match is found
  *
  * @method     ChildEvent findOneById(int $id) Return the first ChildEvent filtered by the id column
  * @method     ChildEvent findOneByEventUserId(int $event_user_id) Return the first ChildEvent filtered by the event_user_id column
- * @method     ChildEvent findOneByEventType(string $event_type) Return the first ChildEvent filtered by the event_type column
+ * @method     ChildEvent findOneByEventType(int $event_type) Return the first ChildEvent filtered by the event_type column
  * @method     ChildEvent findOneByEventDate(string $event_date) Return the first ChildEvent filtered by the event_date column *
 
  * @method     ChildEvent requirePk($key, ConnectionInterface $con = null) Return the ChildEvent by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -53,13 +57,13 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildEvent requireOneById(int $id) Return the first ChildEvent filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEvent requireOneByEventUserId(int $event_user_id) Return the first ChildEvent filtered by the event_user_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildEvent requireOneByEventType(string $event_type) Return the first ChildEvent filtered by the event_type column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildEvent requireOneByEventType(int $event_type) Return the first ChildEvent filtered by the event_type column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEvent requireOneByEventDate(string $event_date) Return the first ChildEvent filtered by the event_date column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildEvent[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildEvent objects based on current ModelCriteria
  * @method     ChildEvent[]|ObjectCollection findById(int $id) Return ChildEvent objects filtered by the id column
  * @method     ChildEvent[]|ObjectCollection findByEventUserId(int $event_user_id) Return ChildEvent objects filtered by the event_user_id column
- * @method     ChildEvent[]|ObjectCollection findByEventType(string $event_type) Return ChildEvent objects filtered by the event_type column
+ * @method     ChildEvent[]|ObjectCollection findByEventType(int $event_type) Return ChildEvent objects filtered by the event_type column
  * @method     ChildEvent[]|ObjectCollection findByEventDate(string $event_date) Return ChildEvent objects filtered by the event_date column
  * @method     ChildEvent[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
@@ -332,24 +336,38 @@ abstract class EventQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByEventType('fooValue');   // WHERE event_type = 'fooValue'
-     * $query->filterByEventType('%fooValue%'); // WHERE event_type LIKE '%fooValue%'
+     * $query->filterByEventType(1234); // WHERE event_type = 1234
+     * $query->filterByEventType(array(12, 34)); // WHERE event_type IN (12, 34)
+     * $query->filterByEventType(array('min' => 12)); // WHERE event_type > 12
      * </code>
      *
-     * @param     string $eventType The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
+     * @see       filterBySport()
+     *
+     * @param     mixed $eventType The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildEventQuery The current query, for fluid interface
      */
     public function filterByEventType($eventType = null, $comparison = null)
     {
-        if (null === $comparison) {
-            if (is_array($eventType)) {
+        if (is_array($eventType)) {
+            $useMinMax = false;
+            if (isset($eventType['min'])) {
+                $this->addUsingAlias(EventTableMap::COL_EVENT_TYPE, $eventType['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($eventType['max'])) {
+                $this->addUsingAlias(EventTableMap::COL_EVENT_TYPE, $eventType['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $eventType)) {
-                $eventType = str_replace('*', '%', $eventType);
-                $comparison = Criteria::LIKE;
             }
         }
 
@@ -474,6 +492,83 @@ abstract class EventQuery extends ModelCriteria
         return $this
             ->joinUser($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'User', '\UserQuery');
+    }
+
+    /**
+     * Filter the query by a related \Sport object
+     *
+     * @param \Sport|ObjectCollection $sport The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @throws \Propel\Runtime\Exception\PropelException
+     *
+     * @return ChildEventQuery The current query, for fluid interface
+     */
+    public function filterBySport($sport, $comparison = null)
+    {
+        if ($sport instanceof \Sport) {
+            return $this
+                ->addUsingAlias(EventTableMap::COL_EVENT_TYPE, $sport->getId(), $comparison);
+        } elseif ($sport instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(EventTableMap::COL_EVENT_TYPE, $sport->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterBySport() only accepts arguments of type \Sport or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Sport relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildEventQuery The current query, for fluid interface
+     */
+    public function joinSport($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Sport');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Sport');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Sport relation Sport object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \SportQuery A secondary query class using the current class as primary query
+     */
+    public function useSportQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinSport($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Sport', '\SportQuery');
     }
 
     /**

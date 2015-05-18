@@ -8,12 +8,17 @@ $baseDir = dirname($vendorDir);
 return array(
     'Base\\Event' => $baseDir . '/generated-classes/Base/Event.php',
     'Base\\EventQuery' => $baseDir . '/generated-classes/Base/EventQuery.php',
+    'Base\\Sport' => $baseDir . '/generated-classes/Base/Sport.php',
+    'Base\\SportQuery' => $baseDir . '/generated-classes/Base/SportQuery.php',
     'Base\\User' => $baseDir . '/generated-classes/Base/User.php',
     'Base\\UserQuery' => $baseDir . '/generated-classes/Base/UserQuery.php',
     'Event' => $baseDir . '/generated-classes/Event.php',
     'EventQuery' => $baseDir . '/generated-classes/EventQuery.php',
     'Map\\EventTableMap' => $baseDir . '/generated-classes/Map/EventTableMap.php',
+    'Map\\SportTableMap' => $baseDir . '/generated-classes/Map/SportTableMap.php',
     'Map\\UserTableMap' => $baseDir . '/generated-classes/Map/UserTableMap.php',
+    'Sport' => $baseDir . '/generated-classes/Sport.php',
+    'SportQuery' => $baseDir . '/generated-classes/SportQuery.php',
     'User' => $baseDir . '/generated-classes/User.php',
     'UserQuery' => $baseDir . '/generated-classes/UserQuery.php',
 );

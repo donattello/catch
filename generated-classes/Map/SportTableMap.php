@@ -2,8 +2,8 @@
 
 namespace Map;
 
-use \Event;
-use \EventQuery;
+use \Sport;
+use \SportQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'event' table.
+ * This class defines the structure of the 'sport' table.
  *
  *
  *
@@ -26,7 +26,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class EventTableMap extends TableMap
+class SportTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -34,7 +34,7 @@ class EventTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.EventTableMap';
+    const CLASS_NAME = '.Map.SportTableMap';
 
     /**
      * The default database name for this class
@@ -44,22 +44,22 @@ class EventTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'event';
+    const TABLE_NAME = 'sport';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Event';
+    const OM_CLASS = '\\Sport';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Event';
+    const CLASS_DEFAULT = 'Sport';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 2;
 
     /**
      * The number of lazy-loaded columns
@@ -69,27 +69,17 @@ class EventTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 2;
 
     /**
      * the column name for the id field
      */
-    const COL_ID = 'event.id';
+    const COL_ID = 'sport.id';
 
     /**
-     * the column name for the event_user_id field
+     * the column name for the sport field
      */
-    const COL_EVENT_USER_ID = 'event.event_user_id';
-
-    /**
-     * the column name for the event_type field
-     */
-    const COL_EVENT_TYPE = 'event.event_type';
-
-    /**
-     * the column name for the event_date field
-     */
-    const COL_EVENT_DATE = 'event.event_date';
+    const COL_SPORT = 'sport.sport';
 
     /**
      * The default string format for model objects of the related table
@@ -103,11 +93,11 @@ class EventTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'EventUserId', 'EventType', 'EventDate', ),
-        self::TYPE_CAMELNAME     => array('id', 'eventUserId', 'eventType', 'eventDate', ),
-        self::TYPE_COLNAME       => array(EventTableMap::COL_ID, EventTableMap::COL_EVENT_USER_ID, EventTableMap::COL_EVENT_TYPE, EventTableMap::COL_EVENT_DATE, ),
-        self::TYPE_FIELDNAME     => array('id', 'event_user_id', 'event_type', 'event_date', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('Id', 'Sport', ),
+        self::TYPE_CAMELNAME     => array('id', 'sport', ),
+        self::TYPE_COLNAME       => array(SportTableMap::COL_ID, SportTableMap::COL_SPORT, ),
+        self::TYPE_FIELDNAME     => array('id', 'sport', ),
+        self::TYPE_NUM           => array(0, 1, )
     );
 
     /**
@@ -117,11 +107,11 @@ class EventTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'EventUserId' => 1, 'EventType' => 2, 'EventDate' => 3, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'eventUserId' => 1, 'eventType' => 2, 'eventDate' => 3, ),
-        self::TYPE_COLNAME       => array(EventTableMap::COL_ID => 0, EventTableMap::COL_EVENT_USER_ID => 1, EventTableMap::COL_EVENT_TYPE => 2, EventTableMap::COL_EVENT_DATE => 3, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'event_user_id' => 1, 'event_type' => 2, 'event_date' => 3, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Sport' => 1, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'sport' => 1, ),
+        self::TYPE_COLNAME       => array(SportTableMap::COL_ID => 0, SportTableMap::COL_SPORT => 1, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'sport' => 1, ),
+        self::TYPE_NUM           => array(0, 1, )
     );
 
     /**
@@ -134,17 +124,15 @@ class EventTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('event');
-        $this->setPhpName('Event');
+        $this->setName('sport');
+        $this->setPhpName('Sport');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Event');
+        $this->setClassName('\\Sport');
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('event_user_id', 'EventUserId', 'INTEGER', 'user', 'user_id', true, null, null);
-        $this->addForeignKey('event_type', 'EventType', 'INTEGER', 'sport', 'id', true, null, null);
-        $this->addColumn('event_date', 'EventDate', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
+        $this->addColumn('sport', 'Sport', 'VARCHAR', true, 16, null);
     } // initialize()
 
     /**
@@ -152,20 +140,13 @@ class EventTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('User', '\\User', RelationMap::MANY_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':event_user_id',
-    1 => ':user_id',
-  ),
-), null, null, null, false);
-        $this->addRelation('Sport', '\\Sport', RelationMap::MANY_TO_ONE, array (
+        $this->addRelation('Event', '\\Event', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (
     0 => ':event_type',
     1 => ':id',
   ),
-), null, null, null, false);
+), null, null, 'Events', false);
     } // buildRelations()
 
     /**
@@ -225,7 +206,7 @@ class EventTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? EventTableMap::CLASS_DEFAULT : EventTableMap::OM_CLASS;
+        return $withPrefix ? SportTableMap::CLASS_DEFAULT : SportTableMap::OM_CLASS;
     }
 
     /**
@@ -239,22 +220,22 @@ class EventTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Event object, last column rank)
+     * @return array           (Sport object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = EventTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = EventTableMap::getInstanceFromPool($key))) {
+        $key = SportTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = SportTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + EventTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + SportTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = EventTableMap::OM_CLASS;
-            /** @var Event $obj */
+            $cls = SportTableMap::OM_CLASS;
+            /** @var Sport $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            EventTableMap::addInstanceToPool($obj, $key);
+            SportTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -277,18 +258,18 @@ class EventTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = EventTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = EventTableMap::getInstanceFromPool($key))) {
+            $key = SportTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = SportTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var Event $obj */
+                /** @var Sport $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                EventTableMap::addInstanceToPool($obj, $key);
+                SportTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -309,15 +290,11 @@ class EventTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(EventTableMap::COL_ID);
-            $criteria->addSelectColumn(EventTableMap::COL_EVENT_USER_ID);
-            $criteria->addSelectColumn(EventTableMap::COL_EVENT_TYPE);
-            $criteria->addSelectColumn(EventTableMap::COL_EVENT_DATE);
+            $criteria->addSelectColumn(SportTableMap::COL_ID);
+            $criteria->addSelectColumn(SportTableMap::COL_SPORT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.event_user_id');
-            $criteria->addSelectColumn($alias . '.event_type');
-            $criteria->addSelectColumn($alias . '.event_date');
+            $criteria->addSelectColumn($alias . '.sport');
         }
     }
 
@@ -330,7 +307,7 @@ class EventTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(EventTableMap::DATABASE_NAME)->getTable(EventTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(SportTableMap::DATABASE_NAME)->getTable(SportTableMap::TABLE_NAME);
     }
 
     /**
@@ -338,16 +315,16 @@ class EventTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(EventTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(EventTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new EventTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(SportTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(SportTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new SportTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a Event or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Sport or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Event object or primary key or array of primary keys
+     * @param mixed               $values Criteria or Sport object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -358,27 +335,27 @@ class EventTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(EventTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(SportTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Event) { // it's a model object
+        } elseif ($values instanceof \Sport) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(EventTableMap::DATABASE_NAME);
-            $criteria->add(EventTableMap::COL_ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(SportTableMap::DATABASE_NAME);
+            $criteria->add(SportTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
-        $query = EventQuery::create()->mergeWith($criteria);
+        $query = SportQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            EventTableMap::clearInstancePool();
+            SportTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                EventTableMap::removeInstanceFromPool($singleval);
+                SportTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -386,20 +363,20 @@ class EventTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the event table.
+     * Deletes all rows from the sport table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return EventQuery::create()->doDeleteAll($con);
+        return SportQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Event or Criteria object.
+     * Performs an INSERT on the database, given a Sport or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Event object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or Sport object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -408,22 +385,22 @@ class EventTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(EventTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(SportTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Event object
+            $criteria = $criteria->buildCriteria(); // build Criteria from Sport object
         }
 
-        if ($criteria->containsKey(EventTableMap::COL_ID) && $criteria->keyContainsValue(EventTableMap::COL_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.EventTableMap::COL_ID.')');
+        if ($criteria->containsKey(SportTableMap::COL_ID) && $criteria->keyContainsValue(SportTableMap::COL_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.SportTableMap::COL_ID.')');
         }
 
 
         // Set the correct dbName
-        $query = EventQuery::create()->mergeWith($criteria);
+        $query = SportQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -432,7 +409,7 @@ class EventTableMap extends TableMap
         });
     }
 
-} // EventTableMap
+} // SportTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-EventTableMap::buildTableMap();
+SportTableMap::buildTableMap();

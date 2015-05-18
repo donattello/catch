@@ -13,13 +13,30 @@ CREATE TABLE `event`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `event_user_id` INTEGER NOT NULL,
-    `event_type` VARCHAR(20) NOT NULL,
+    `event_type` INTEGER NOT NULL,
     `event_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     INDEX `event_user_id` (`event_user_id`),
+    INDEX `event_type` (`event_type`),
     CONSTRAINT `event_ibfk_1`
         FOREIGN KEY (`event_user_id`)
-        REFERENCES `user` (`user_id`)
+        REFERENCES `user` (`user_id`),
+    CONSTRAINT `event_ibfk_2`
+        FOREIGN KEY (`event_type`)
+        REFERENCES `sport` (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- sport
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sport`;
+
+CREATE TABLE `sport`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `sport` VARCHAR(16) NOT NULL,
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
