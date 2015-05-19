@@ -3,7 +3,7 @@
     <section class="container-fluid" id="planner2">
         <div class="row homecontainer">
             <div class="containerHome col-xs-11">
-                <a href="_/php/createEvent.php">
+                <a href="views/createEvent.php">
                     <div class="createEvent button2">
                         <div class="position">
                             <h3>CREATE</h3>
@@ -15,7 +15,15 @@
                 <form action="processing/add-event.php" method="post">
                     <select name="event-type">
                         <option value="1">Tennis</option>
-                        <option value="1">Tennis</option>
+                        <option value="2">Football</option>
+                        <option value="3">Basketball</option>
+                        <option value="4">Netball</option>
+                        <option value="5">Volleyball</option>
+                        <option value="6">Gym</option>
+                        <option value="7">Running</option>
+                        <option value="8">Cycling</option>
+                        <option value="9">Rugby</option>
+                        <option value="10">Badminton</option>
                     </select>
                     <input type="submit" name="add-event" value="Add Event">
                 </form>
