@@ -51,10 +51,6 @@ CREATE TABLE `user`
     `user_name` VARCHAR(64) NOT NULL,
     `user_password_hash` VARCHAR(255) NOT NULL,
     `user_email` VARCHAR(64) NOT NULL,
-    `user_age` INTEGER NOT NULL,
-    `user_gender` VARCHAR(6) NOT NULL,
-    `user_activity` VARCHAR(120) NOT NULL,
-    `bio` TEXT NOT NULL,
     PRIMARY KEY (`user_id`),
     UNIQUE INDEX `user_name` (`user_name`),
     UNIQUE INDEX `user_email` (`user_email`)

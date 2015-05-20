@@ -24,10 +24,10 @@ if(!empty($submitted)) {
 
 } else {
     //REDIRECT
-//    $url = "http" . ((!empty($_SERVER['HTTPS'])) ? "s" : "") . "://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
-//    $redirect = str_replace('add-event.php','createEvent.php', $url);
-//
-//    header("Location: $redirect");
-//    exit;
+    $url = "http" . ((!empty($_SERVER['HTTPS'])) ? "s" : "") . "://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+    $redirect = str_replace('add-event.php','createEvent.php', $url);
+
+    header("Location: $redirect");
+    exit;
 }
 ?>

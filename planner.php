@@ -13,6 +13,7 @@
                 </a><!--link creatEvent-->
                 
                 
+<!--
                 <a href="_/php/existingEvents.php">
                     <div class="existingEvents col-xs-6">
                         <div id="colourExistingEvents">
@@ -34,6 +35,7 @@
                        </div>
                     </div>
                 </a>
+-->
             </div><!--containerHome-->
             
         </div><!--row homecontainer-->

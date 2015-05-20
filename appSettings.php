@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CATCH</title>
-<link href="../css/bootstrap.css" rel="stylesheet" media="screen">
-<link href="../css/mystyles.css" rel="stylesheet" media="screen">
-</head>
- 
-<body id="appSettings" class="home">
-    <!-- home -->
-    <?php include "header2.php"; ?>
+ <?php include "views/_templates/header.php"; ?>
     
   <section class="container-fluid" id="appSettings2">
        <div class="row appSettings">
@@ -19,7 +8,7 @@
                    <div class="row setting">
                        <h3 class="settingDescription col-xs-9">New Matches</h3>
                         <div class="onOffImg col-xs-3">
-                            <img src="../../icons/onOff.png" width="50px" height="46px">
+                            <img src="icons/onOff.png" width="50px" height="46px">
                         </div>
                     </div><!--row setting-->
                    <!--<div class="line2">
@@ -32,7 +21,7 @@
                <div class="row setting">
                     <h3 class="settingDescription col-xs-9">Message Notification</h3>
                     <div class="onOffImg col-xs-3">
-                        <img src="../../icons/onOff.png" width="50px" height="46px">
+                        <img src="icons/onOff.png" width="50px" height="46px">
                     </div>
                 </div><!--row setting-->
                 <!--<div class="line2">
@@ -45,7 +34,7 @@
                 <div class="row setting">
                     <h3 class="settingDescription col-xs-9">Activity Reminder</h3>
                     <div class="onOffImg col-xs-3">
-                        <img src="../../icons/onOff.png" width="50px" height="46px">
+                        <img src="icons/onOff.png" width="50px" height="46px">
                     </div>
                 </div><!--row setting-->
                 <!--<div class="line2">
@@ -56,7 +45,7 @@
                <div class="row setting">
                     <h3 class="settingDescription col-xs-9">Calendar Reminder</h3>
                     <div class="onOffImg col-xs-3">
-                        <img src="../../icons/onOff.png" width="50px" height="46px">
+                        <img src="icons/onOff.png" width="50px" height="46px">
                     </div>
                 </div><!--row setting-->
                 <!--<div class="line2">
@@ -67,7 +56,7 @@
                <div class="row setting">
                     <h3 class="settingDescription col-xs-9">Cancelations</h3>
                     <div class="onOffImg col-xs-3">
-                        <img src="../../icons/onOff.png" width="50px" height="46px">
+                        <img src="icons/onOff.png" width="50px" height="46px">
                     </div>
                 </div><!--row setting-->
                 <!--<div class="line2">
@@ -78,7 +67,7 @@
                <div class="row setting">
                     <h3 class="settingDescription col-xs-9">Sound Notifications</h3>
                     <div class="onOffImg col-xs-3">
-                        <img src="../../icons/onOff.png" width="50px" height="46px">
+                        <img src="icons/onOff.png" width="50px" height="46px">
                     </div>
                 </div><!--row setting-->
                 <!--<div class="line2">
@@ -90,5 +79,4 @@
             <button type="button" id="deleteBtn">Delete Account</button>
     </section>
     
-</body>
-</html>
+<?php include ("views/_templates/footer.php"); ?>

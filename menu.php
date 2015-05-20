@@ -14,7 +14,7 @@
    <section class="container-fluid" id="menu2">
        <div class="row menu">
            
-           <a href="views/viewProfile.php">
+           <a href="viewProfile.php">
                <section class="menuItem" id="viewProfile">
                    <h3>View Profile</h3>
                    <div class="line">
@@ -22,7 +22,7 @@
                 </section> <!--viewProfile-->
             </a>
             
-           <a href="views/editProfile.php">
+           <a href="editProfile.php">
             <section class="menuItem" id="editProfile">
                 <h3>Edit Profile</h3>
                 <div class="line">
@@ -30,7 +30,7 @@
             </section><!--line-->
             </a>
             
-           <a href="views/appSettings.php">
+           <a href="appSettings.php">
             <section class="menuItem" id="appSettings">
                 <h3>App Settings</h3>
                 <div class="line">
