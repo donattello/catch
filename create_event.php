@@ -4,11 +4,11 @@
 
     <?php include ("views/_templates/get-event-types.php"); ?>
 
-    <input type="date" name="date">
+    <input type="date" name="date" required>
 
-    <input type="time" name="time">
+    <input type="time" name="time" required>
 
-    <input type="text" name="place" placeholder="Where...">
+    <input type="text" name="place" placeholder="Where..." required>
 
     <select name="people">
         <option value="0">How many people</option>
