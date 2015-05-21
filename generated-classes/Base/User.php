@@ -88,6 +88,12 @@ abstract class User implements ActiveRecordInterface
     protected $user_email;
 
     /**
+     * The value for the bio field.
+     * @var        string
+     */
+    protected $bio;
+
+    /**
      * @var        ObjectCollection|ChildEvent[] Collection to store aggregation of ChildEvent objects.
      */
     protected $collEvents;
@@ -365,6 +371,16 @@ abstract class User implements ActiveRecordInterface
     }
 
     /**
+     * Get the [bio] column value.
+     *
+     * @return string
+     */
+    public function getBio()
+    {
+        return $this->bio;
+    }
+
+    /**
      * Set the value of [user_id] column.
      *
      * @param int $v new value
@@ -445,6 +461,26 @@ abstract class User implements ActiveRecordInterface
     } // setUserEmail()
 
     /**
+     * Set the value of [bio] column.
+     *
+     * @param string $v new value
+     * @return $this|\User The current object (for fluent API support)
+     */
+    public function setBio($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->bio !== $v) {
+            $this->bio = $v;
+            $this->modifiedColumns[UserTableMap::COL_BIO] = true;
+        }
+
+        return $this;
+    } // setBio()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -491,6 +527,9 @@ abstract class User implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : UserTableMap::translateFieldName('UserEmail', TableMap::TYPE_PHPNAME, $indexType)];
             $this->user_email = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : UserTableMap::translateFieldName('Bio', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->bio = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -499,7 +538,7 @@ abstract class User implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 4; // 4 = UserTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = UserTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\User'), 0, $e);
@@ -727,6 +766,9 @@ abstract class User implements ActiveRecordInterface
         if ($this->isColumnModified(UserTableMap::COL_USER_EMAIL)) {
             $modifiedColumns[':p' . $index++]  = 'user_email';
         }
+        if ($this->isColumnModified(UserTableMap::COL_BIO)) {
+            $modifiedColumns[':p' . $index++]  = 'bio';
+        }
 
         $sql = sprintf(
             'INSERT INTO user (%s) VALUES (%s)',
@@ -749,6 +791,9 @@ abstract class User implements ActiveRecordInterface
                         break;
                     case 'user_email':
                         $stmt->bindValue($identifier, $this->user_email, PDO::PARAM_STR);
+                        break;
+                    case 'bio':
+                        $stmt->bindValue($identifier, $this->bio, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -824,6 +869,9 @@ abstract class User implements ActiveRecordInterface
             case 3:
                 return $this->getUserEmail();
                 break;
+            case 4:
+                return $this->getBio();
+                break;
             default:
                 return null;
                 break;
@@ -858,6 +906,7 @@ abstract class User implements ActiveRecordInterface
             $keys[1] => $this->getUserName(),
             $keys[2] => $this->getUserPasswordHash(),
             $keys[3] => $this->getUserEmail(),
+            $keys[4] => $this->getBio(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -926,6 +975,9 @@ abstract class User implements ActiveRecordInterface
             case 3:
                 $this->setUserEmail($value);
                 break;
+            case 4:
+                $this->setBio($value);
+                break;
         } // switch()
 
         return $this;
@@ -963,6 +1015,9 @@ abstract class User implements ActiveRecordInterface
         }
         if (array_key_exists($keys[3], $arr)) {
             $this->setUserEmail($arr[$keys[3]]);
+        }
+        if (array_key_exists($keys[4], $arr)) {
+            $this->setBio($arr[$keys[4]]);
         }
     }
 
@@ -1016,6 +1071,9 @@ abstract class User implements ActiveRecordInterface
         }
         if ($this->isColumnModified(UserTableMap::COL_USER_EMAIL)) {
             $criteria->add(UserTableMap::COL_USER_EMAIL, $this->user_email);
+        }
+        if ($this->isColumnModified(UserTableMap::COL_BIO)) {
+            $criteria->add(UserTableMap::COL_BIO, $this->bio);
         }
 
         return $criteria;
@@ -1106,6 +1164,7 @@ abstract class User implements ActiveRecordInterface
         $copyObj->setUserName($this->getUserName());
         $copyObj->setUserPasswordHash($this->getUserPasswordHash());
         $copyObj->setUserEmail($this->getUserEmail());
+        $copyObj->setBio($this->getBio());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1418,6 +1477,7 @@ abstract class User implements ActiveRecordInterface
         $this->user_name = null;
         $this->user_password_hash = null;
         $this->user_email = null;
+        $this->bio = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

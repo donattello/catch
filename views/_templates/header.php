@@ -1,11 +1,12 @@
 <?php
 //PHP 5.3.7 NEEDED
+require_once "classes/session.php";
 require_once("libraries/password_compatibility_library.php");
 require_once("config/db.php");
 require_once("classes/Login.php");
 
 $autoloader = require 'vendor/autoload.php';
-$autoloader->add('generated-classes/');
+$autoloader->add('generated-classes/', '');
 require_once ('generated-conf/config.php');
 
 $login = new Login();
@@ -19,10 +20,10 @@ $login = new Login();
         <link href="css/bootstrap.css" rel="stylesheet" media="screen">
         <link href="css/mystyles.css" rel="stylesheet" media="screen">
     </head>
- 
+
     <body id="appSettings" class="home">
-        
-        
+
+
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="row">
@@ -50,17 +51,19 @@ $login = new Login();
                         <a href="friends.php" class="col-xs-3">
                             <img src="icons/smile.png" width="25px" height="25px"  class="image-nav">
                         </a>
-                        
+
                         <a href="chat.php" class="col-xs-3">
                             <img src="icons/chat.png" width="25px" height="25px" class="image-nav">
                         </a>
                     </div><!--icon-->
 
-                </div><!--row--> 
+                </div><!--row-->
 
             </div><!-- /.container-fluid -->
         </nav>
-        
+
+        <?php echo message(); ?>
+
     <?php
         if ($login->isUserLoggedIn() == true) {
         }

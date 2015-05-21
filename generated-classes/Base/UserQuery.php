@@ -24,11 +24,13 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUserQuery orderByUserName($order = Criteria::ASC) Order by the user_name column
  * @method     ChildUserQuery orderByUserPasswordHash($order = Criteria::ASC) Order by the user_password_hash column
  * @method     ChildUserQuery orderByUserEmail($order = Criteria::ASC) Order by the user_email column
+ * @method     ChildUserQuery orderByBio($order = Criteria::ASC) Order by the bio column
  *
  * @method     ChildUserQuery groupByUserId() Group by the user_id column
  * @method     ChildUserQuery groupByUserName() Group by the user_name column
  * @method     ChildUserQuery groupByUserPasswordHash() Group by the user_password_hash column
  * @method     ChildUserQuery groupByUserEmail() Group by the user_email column
+ * @method     ChildUserQuery groupByBio() Group by the bio column
  *
  * @method     ChildUserQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildUserQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -46,7 +48,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUser findOneByUserId(int $user_id) Return the first ChildUser filtered by the user_id column
  * @method     ChildUser findOneByUserName(string $user_name) Return the first ChildUser filtered by the user_name column
  * @method     ChildUser findOneByUserPasswordHash(string $user_password_hash) Return the first ChildUser filtered by the user_password_hash column
- * @method     ChildUser findOneByUserEmail(string $user_email) Return the first ChildUser filtered by the user_email column *
+ * @method     ChildUser findOneByUserEmail(string $user_email) Return the first ChildUser filtered by the user_email column
+ * @method     ChildUser findOneByBio(string $bio) Return the first ChildUser filtered by the bio column *
 
  * @method     ChildUser requirePk($key, ConnectionInterface $con = null) Return the ChildUser by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUser requireOne(ConnectionInterface $con = null) Return the first ChildUser matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -55,12 +58,14 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUser requireOneByUserName(string $user_name) Return the first ChildUser filtered by the user_name column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUser requireOneByUserPasswordHash(string $user_password_hash) Return the first ChildUser filtered by the user_password_hash column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUser requireOneByUserEmail(string $user_email) Return the first ChildUser filtered by the user_email column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUser requireOneByBio(string $bio) Return the first ChildUser filtered by the bio column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildUser[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildUser objects based on current ModelCriteria
  * @method     ChildUser[]|ObjectCollection findByUserId(int $user_id) Return ChildUser objects filtered by the user_id column
  * @method     ChildUser[]|ObjectCollection findByUserName(string $user_name) Return ChildUser objects filtered by the user_name column
  * @method     ChildUser[]|ObjectCollection findByUserPasswordHash(string $user_password_hash) Return ChildUser objects filtered by the user_password_hash column
  * @method     ChildUser[]|ObjectCollection findByUserEmail(string $user_email) Return ChildUser objects filtered by the user_email column
+ * @method     ChildUser[]|ObjectCollection findByBio(string $bio) Return ChildUser objects filtered by the bio column
  * @method     ChildUser[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -153,7 +158,7 @@ abstract class UserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT user_id, user_name, user_password_hash, user_email FROM user WHERE user_id = :p0';
+        $sql = 'SELECT user_id, user_name, user_password_hash, user_email, bio FROM user WHERE user_id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -369,6 +374,35 @@ abstract class UserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(UserTableMap::COL_USER_EMAIL, $userEmail, $comparison);
+    }
+
+    /**
+     * Filter the query on the bio column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByBio('fooValue');   // WHERE bio = 'fooValue'
+     * $query->filterByBio('%fooValue%'); // WHERE bio LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $bio The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildUserQuery The current query, for fluid interface
+     */
+    public function filterByBio($bio = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($bio)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $bio)) {
+                $bio = str_replace('*', '%', $bio);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(UserTableMap::COL_BIO, $bio, $comparison);
     }
 
     /**

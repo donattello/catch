@@ -1,33 +1,39 @@
 <?php
 session_start();
 $autoloader = require '../vendor/autoload.php';
-$autoloader->add('../generated-classes/');
+$autoloader->add('../generated-classes/', '');
 require_once ('../generated-conf/config.php');
 
 $submitted = $_POST["add-event"];
 
 if(!empty($submitted)) {
 
-	//var_dump($_POST["date"]);
+	$date = $_POST["date"];
+	$time = $_POST["time"];
+	$eventType = $_POST["event-type"];
 
-    $eventType = $_POST["event-type"];
+	if(empty($date) || empty($time) || empty($eventType)) {
+		$_SESSION["message"] = "Please fill in all fields";
+	    header("Location: ../create_event.php");
+		exit;
+	}
 
     $newEvent = new Event();
     $newEvent->setEventUserId($_SESSION["user_id"]);
-    $newEvent->setEventDate($_POST["date"].$_POST["time"]);
+    $newEvent->setEventDate($date.$time);
     $newEvent->setEventType($eventType);
 
     var_dump($newEvent->toArray());
     $newEvent->save();
 
-    //redirect
+    $_SESSION["message"] = "Your event has been added";
+
+    header("Location: ../index.php");
+	exit;
 
 } else {
-    //REDIRECT
-    $url = "http" . ((!empty($_SERVER['HTTPS'])) ? "s" : "") . "://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
-    $redirect = str_replace('add-event.php','createEvent.php', $url);
-
-    header("Location: $redirect");
+	$_SESSION["message"] = "Please submit the form";
+    header("Location: ../create_event.php");
     exit;
 }
 ?>

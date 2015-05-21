@@ -5,6 +5,12 @@
 </div>
 
 <div>
+	Bio: <?= $user->getBio(); ?>
+</div>
+
+
+
+<div>
 Your Events
 </div>
 <?php foreach($user->getEvents() as $event) { ?>

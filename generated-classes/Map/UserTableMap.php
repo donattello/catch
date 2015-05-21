@@ -59,7 +59,7 @@ class UserTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 5;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class UserTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /**
      * the column name for the user_id field
@@ -92,6 +92,11 @@ class UserTableMap extends TableMap
     const COL_USER_EMAIL = 'user.user_email';
 
     /**
+     * the column name for the bio field
+     */
+    const COL_BIO = 'user.bio';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -103,11 +108,11 @@ class UserTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('UserId', 'UserName', 'UserPasswordHash', 'UserEmail', ),
-        self::TYPE_CAMELNAME     => array('userId', 'userName', 'userPasswordHash', 'userEmail', ),
-        self::TYPE_COLNAME       => array(UserTableMap::COL_USER_ID, UserTableMap::COL_USER_NAME, UserTableMap::COL_USER_PASSWORD_HASH, UserTableMap::COL_USER_EMAIL, ),
-        self::TYPE_FIELDNAME     => array('user_id', 'user_name', 'user_password_hash', 'user_email', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('UserId', 'UserName', 'UserPasswordHash', 'UserEmail', 'Bio', ),
+        self::TYPE_CAMELNAME     => array('userId', 'userName', 'userPasswordHash', 'userEmail', 'bio', ),
+        self::TYPE_COLNAME       => array(UserTableMap::COL_USER_ID, UserTableMap::COL_USER_NAME, UserTableMap::COL_USER_PASSWORD_HASH, UserTableMap::COL_USER_EMAIL, UserTableMap::COL_BIO, ),
+        self::TYPE_FIELDNAME     => array('user_id', 'user_name', 'user_password_hash', 'user_email', 'bio', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -117,11 +122,11 @@ class UserTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('UserId' => 0, 'UserName' => 1, 'UserPasswordHash' => 2, 'UserEmail' => 3, ),
-        self::TYPE_CAMELNAME     => array('userId' => 0, 'userName' => 1, 'userPasswordHash' => 2, 'userEmail' => 3, ),
-        self::TYPE_COLNAME       => array(UserTableMap::COL_USER_ID => 0, UserTableMap::COL_USER_NAME => 1, UserTableMap::COL_USER_PASSWORD_HASH => 2, UserTableMap::COL_USER_EMAIL => 3, ),
-        self::TYPE_FIELDNAME     => array('user_id' => 0, 'user_name' => 1, 'user_password_hash' => 2, 'user_email' => 3, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('UserId' => 0, 'UserName' => 1, 'UserPasswordHash' => 2, 'UserEmail' => 3, 'Bio' => 4, ),
+        self::TYPE_CAMELNAME     => array('userId' => 0, 'userName' => 1, 'userPasswordHash' => 2, 'userEmail' => 3, 'bio' => 4, ),
+        self::TYPE_COLNAME       => array(UserTableMap::COL_USER_ID => 0, UserTableMap::COL_USER_NAME => 1, UserTableMap::COL_USER_PASSWORD_HASH => 2, UserTableMap::COL_USER_EMAIL => 3, UserTableMap::COL_BIO => 4, ),
+        self::TYPE_FIELDNAME     => array('user_id' => 0, 'user_name' => 1, 'user_password_hash' => 2, 'user_email' => 3, 'bio' => 4, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -145,6 +150,7 @@ class UserTableMap extends TableMap
         $this->addColumn('user_name', 'UserName', 'VARCHAR', true, 64, null);
         $this->addColumn('user_password_hash', 'UserPasswordHash', 'VARCHAR', true, 255, null);
         $this->addColumn('user_email', 'UserEmail', 'VARCHAR', true, 64, null);
+        $this->addColumn('bio', 'Bio', 'LONGVARCHAR', false, null, null);
     } // initialize()
 
     /**
@@ -306,11 +312,13 @@ class UserTableMap extends TableMap
             $criteria->addSelectColumn(UserTableMap::COL_USER_NAME);
             $criteria->addSelectColumn(UserTableMap::COL_USER_PASSWORD_HASH);
             $criteria->addSelectColumn(UserTableMap::COL_USER_EMAIL);
+            $criteria->addSelectColumn(UserTableMap::COL_BIO);
         } else {
             $criteria->addSelectColumn($alias . '.user_id');
             $criteria->addSelectColumn($alias . '.user_name');
             $criteria->addSelectColumn($alias . '.user_password_hash');
             $criteria->addSelectColumn($alias . '.user_email');
+            $criteria->addSelectColumn($alias . '.bio');
         }
     }
 
