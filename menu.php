@@ -1,14 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CATCH</title>
-<link href="css/bootstrap.css" rel="stylesheet" media="screen">
-<link href="css/mystyles.css" rel="stylesheet" media="screen">
-</head>
- 
-<body id="menu" class="home">
-    <!-- home -->
     <?php include "views/_templates/header.php"; ?>
     
    <section class="container-fluid" id="menu2">
@@ -39,9 +28,12 @@
             </a>
            
         </div><!--row-->
-               
-            <button type="button" id="signOutBtn">Sign Out</button>
+       
+            <!-- because people were asking: "index.php?logout" is just my simplified form of "index.php?logout=true" -->
+            <a href="login_user.php" id="signOutBtn">Sign Out</a>         
+       
+<!--            <button type="button" id="signOutBtn">Sign Out</button>-->
     </section>
     
-</body>
-</html>
+    
+<?php include ("views/_templates/footer.php"); ?>

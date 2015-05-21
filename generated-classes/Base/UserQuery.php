@@ -25,12 +25,16 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUserQuery orderByUserPasswordHash($order = Criteria::ASC) Order by the user_password_hash column
  * @method     ChildUserQuery orderByUserEmail($order = Criteria::ASC) Order by the user_email column
  * @method     ChildUserQuery orderByBio($order = Criteria::ASC) Order by the bio column
+ * @method     ChildUserQuery orderByUserAge($order = Criteria::ASC) Order by the user_age column
+ * @method     ChildUserQuery orderByUserGender($order = Criteria::ASC) Order by the user_gender column
  *
  * @method     ChildUserQuery groupByUserId() Group by the user_id column
  * @method     ChildUserQuery groupByUserName() Group by the user_name column
  * @method     ChildUserQuery groupByUserPasswordHash() Group by the user_password_hash column
  * @method     ChildUserQuery groupByUserEmail() Group by the user_email column
  * @method     ChildUserQuery groupByBio() Group by the bio column
+ * @method     ChildUserQuery groupByUserAge() Group by the user_age column
+ * @method     ChildUserQuery groupByUserGender() Group by the user_gender column
  *
  * @method     ChildUserQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildUserQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -49,7 +53,9 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUser findOneByUserName(string $user_name) Return the first ChildUser filtered by the user_name column
  * @method     ChildUser findOneByUserPasswordHash(string $user_password_hash) Return the first ChildUser filtered by the user_password_hash column
  * @method     ChildUser findOneByUserEmail(string $user_email) Return the first ChildUser filtered by the user_email column
- * @method     ChildUser findOneByBio(string $bio) Return the first ChildUser filtered by the bio column *
+ * @method     ChildUser findOneByBio(string $bio) Return the first ChildUser filtered by the bio column
+ * @method     ChildUser findOneByUserAge(int $user_age) Return the first ChildUser filtered by the user_age column
+ * @method     ChildUser findOneByUserGender(string $user_gender) Return the first ChildUser filtered by the user_gender column *
 
  * @method     ChildUser requirePk($key, ConnectionInterface $con = null) Return the ChildUser by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUser requireOne(ConnectionInterface $con = null) Return the first ChildUser matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -59,6 +65,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUser requireOneByUserPasswordHash(string $user_password_hash) Return the first ChildUser filtered by the user_password_hash column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUser requireOneByUserEmail(string $user_email) Return the first ChildUser filtered by the user_email column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUser requireOneByBio(string $bio) Return the first ChildUser filtered by the bio column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUser requireOneByUserAge(int $user_age) Return the first ChildUser filtered by the user_age column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUser requireOneByUserGender(string $user_gender) Return the first ChildUser filtered by the user_gender column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildUser[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildUser objects based on current ModelCriteria
  * @method     ChildUser[]|ObjectCollection findByUserId(int $user_id) Return ChildUser objects filtered by the user_id column
@@ -66,6 +74,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUser[]|ObjectCollection findByUserPasswordHash(string $user_password_hash) Return ChildUser objects filtered by the user_password_hash column
  * @method     ChildUser[]|ObjectCollection findByUserEmail(string $user_email) Return ChildUser objects filtered by the user_email column
  * @method     ChildUser[]|ObjectCollection findByBio(string $bio) Return ChildUser objects filtered by the bio column
+ * @method     ChildUser[]|ObjectCollection findByUserAge(int $user_age) Return ChildUser objects filtered by the user_age column
+ * @method     ChildUser[]|ObjectCollection findByUserGender(string $user_gender) Return ChildUser objects filtered by the user_gender column
  * @method     ChildUser[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -158,7 +168,7 @@ abstract class UserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT user_id, user_name, user_password_hash, user_email, bio FROM user WHERE user_id = :p0';
+        $sql = 'SELECT user_id, user_name, user_password_hash, user_email, bio, user_age, user_gender FROM user WHERE user_id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -403,6 +413,76 @@ abstract class UserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(UserTableMap::COL_BIO, $bio, $comparison);
+    }
+
+    /**
+     * Filter the query on the user_age column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUserAge(1234); // WHERE user_age = 1234
+     * $query->filterByUserAge(array(12, 34)); // WHERE user_age IN (12, 34)
+     * $query->filterByUserAge(array('min' => 12)); // WHERE user_age > 12
+     * </code>
+     *
+     * @param     mixed $userAge The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildUserQuery The current query, for fluid interface
+     */
+    public function filterByUserAge($userAge = null, $comparison = null)
+    {
+        if (is_array($userAge)) {
+            $useMinMax = false;
+            if (isset($userAge['min'])) {
+                $this->addUsingAlias(UserTableMap::COL_USER_AGE, $userAge['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($userAge['max'])) {
+                $this->addUsingAlias(UserTableMap::COL_USER_AGE, $userAge['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(UserTableMap::COL_USER_AGE, $userAge, $comparison);
+    }
+
+    /**
+     * Filter the query on the user_gender column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUserGender('fooValue');   // WHERE user_gender = 'fooValue'
+     * $query->filterByUserGender('%fooValue%'); // WHERE user_gender LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $userGender The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildUserQuery The current query, for fluid interface
+     */
+    public function filterByUserGender($userGender = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($userGender)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $userGender)) {
+                $userGender = str_replace('*', '%', $userGender);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(UserTableMap::COL_USER_GENDER, $userGender, $comparison);
     }
 
     /**

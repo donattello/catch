@@ -94,6 +94,18 @@ abstract class User implements ActiveRecordInterface
     protected $bio;
 
     /**
+     * The value for the user_age field.
+     * @var        int
+     */
+    protected $user_age;
+
+    /**
+     * The value for the user_gender field.
+     * @var        string
+     */
+    protected $user_gender;
+
+    /**
      * @var        ObjectCollection|ChildEvent[] Collection to store aggregation of ChildEvent objects.
      */
     protected $collEvents;
@@ -381,6 +393,26 @@ abstract class User implements ActiveRecordInterface
     }
 
     /**
+     * Get the [user_age] column value.
+     *
+     * @return int
+     */
+    public function getUserAge()
+    {
+        return $this->user_age;
+    }
+
+    /**
+     * Get the [user_gender] column value.
+     *
+     * @return string
+     */
+    public function getUserGender()
+    {
+        return $this->user_gender;
+    }
+
+    /**
      * Set the value of [user_id] column.
      *
      * @param int $v new value
@@ -481,6 +513,46 @@ abstract class User implements ActiveRecordInterface
     } // setBio()
 
     /**
+     * Set the value of [user_age] column.
+     *
+     * @param int $v new value
+     * @return $this|\User The current object (for fluent API support)
+     */
+    public function setUserAge($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->user_age !== $v) {
+            $this->user_age = $v;
+            $this->modifiedColumns[UserTableMap::COL_USER_AGE] = true;
+        }
+
+        return $this;
+    } // setUserAge()
+
+    /**
+     * Set the value of [user_gender] column.
+     *
+     * @param string $v new value
+     * @return $this|\User The current object (for fluent API support)
+     */
+    public function setUserGender($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->user_gender !== $v) {
+            $this->user_gender = $v;
+            $this->modifiedColumns[UserTableMap::COL_USER_GENDER] = true;
+        }
+
+        return $this;
+    } // setUserGender()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -530,6 +602,12 @@ abstract class User implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : UserTableMap::translateFieldName('Bio', TableMap::TYPE_PHPNAME, $indexType)];
             $this->bio = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : UserTableMap::translateFieldName('UserAge', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->user_age = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : UserTableMap::translateFieldName('UserGender', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->user_gender = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -538,7 +616,7 @@ abstract class User implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = UserTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = UserTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\User'), 0, $e);
@@ -769,6 +847,12 @@ abstract class User implements ActiveRecordInterface
         if ($this->isColumnModified(UserTableMap::COL_BIO)) {
             $modifiedColumns[':p' . $index++]  = 'bio';
         }
+        if ($this->isColumnModified(UserTableMap::COL_USER_AGE)) {
+            $modifiedColumns[':p' . $index++]  = 'user_age';
+        }
+        if ($this->isColumnModified(UserTableMap::COL_USER_GENDER)) {
+            $modifiedColumns[':p' . $index++]  = 'user_gender';
+        }
 
         $sql = sprintf(
             'INSERT INTO user (%s) VALUES (%s)',
@@ -794,6 +878,12 @@ abstract class User implements ActiveRecordInterface
                         break;
                     case 'bio':
                         $stmt->bindValue($identifier, $this->bio, PDO::PARAM_STR);
+                        break;
+                    case 'user_age':
+                        $stmt->bindValue($identifier, $this->user_age, PDO::PARAM_INT);
+                        break;
+                    case 'user_gender':
+                        $stmt->bindValue($identifier, $this->user_gender, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -872,6 +962,12 @@ abstract class User implements ActiveRecordInterface
             case 4:
                 return $this->getBio();
                 break;
+            case 5:
+                return $this->getUserAge();
+                break;
+            case 6:
+                return $this->getUserGender();
+                break;
             default:
                 return null;
                 break;
@@ -907,6 +1003,8 @@ abstract class User implements ActiveRecordInterface
             $keys[2] => $this->getUserPasswordHash(),
             $keys[3] => $this->getUserEmail(),
             $keys[4] => $this->getBio(),
+            $keys[5] => $this->getUserAge(),
+            $keys[6] => $this->getUserGender(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -978,6 +1076,12 @@ abstract class User implements ActiveRecordInterface
             case 4:
                 $this->setBio($value);
                 break;
+            case 5:
+                $this->setUserAge($value);
+                break;
+            case 6:
+                $this->setUserGender($value);
+                break;
         } // switch()
 
         return $this;
@@ -1018,6 +1122,12 @@ abstract class User implements ActiveRecordInterface
         }
         if (array_key_exists($keys[4], $arr)) {
             $this->setBio($arr[$keys[4]]);
+        }
+        if (array_key_exists($keys[5], $arr)) {
+            $this->setUserAge($arr[$keys[5]]);
+        }
+        if (array_key_exists($keys[6], $arr)) {
+            $this->setUserGender($arr[$keys[6]]);
         }
     }
 
@@ -1074,6 +1184,12 @@ abstract class User implements ActiveRecordInterface
         }
         if ($this->isColumnModified(UserTableMap::COL_BIO)) {
             $criteria->add(UserTableMap::COL_BIO, $this->bio);
+        }
+        if ($this->isColumnModified(UserTableMap::COL_USER_AGE)) {
+            $criteria->add(UserTableMap::COL_USER_AGE, $this->user_age);
+        }
+        if ($this->isColumnModified(UserTableMap::COL_USER_GENDER)) {
+            $criteria->add(UserTableMap::COL_USER_GENDER, $this->user_gender);
         }
 
         return $criteria;
@@ -1165,6 +1281,8 @@ abstract class User implements ActiveRecordInterface
         $copyObj->setUserPasswordHash($this->getUserPasswordHash());
         $copyObj->setUserEmail($this->getUserEmail());
         $copyObj->setBio($this->getBio());
+        $copyObj->setUserAge($this->getUserAge());
+        $copyObj->setUserGender($this->getUserGender());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1478,6 +1596,8 @@ abstract class User implements ActiveRecordInterface
         $this->user_password_hash = null;
         $this->user_email = null;
         $this->bio = null;
+        $this->user_age = null;
+        $this->user_gender = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

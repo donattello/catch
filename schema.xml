@@ -34,6 +34,8 @@
     <column name="user_password_hash" phpName="UserPasswordHash" type="VARCHAR" size="255" required="true"/>
     <column name="user_email" phpName="UserEmail" type="VARCHAR" size="64" required="true"/>
     <column name="bio" phpName="Bio" type="LONGVARCHAR"/>
+    <column name="user_age" phpName="UserAge" type="INTEGER" size="2"/>
+    <column name="user_gender" phpName="UserGender" type="VARCHAR" size="6"/>
     <unique name="user_name">
       <unique-column name="user_name"/>
     </unique>
