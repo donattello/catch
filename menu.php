@@ -1,4 +1,5 @@
-    <?php include "views/_templates/header.php"; ?>
+<?php require_once 'classes/Login.php'; ?>   
+<?php include "views/_templates/header.php"; ?>
     
    <section class="container-fluid" id="menu2">
        <div class="row menu">
@@ -30,7 +31,7 @@
         </div><!--row-->
        
             <!-- because people were asking: "index.php?logout" is just my simplified form of "index.php?logout=true" -->
-            <a href="login_user.php" id="signOutBtn">Sign Out</a>         
+            <a href="login_user.php?logout" id="signOutBtn">Sign Out</a>         
        
 <!--            <button type="button" id="signOutBtn">Sign Out</button>-->
     </section>

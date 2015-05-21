@@ -1,6 +1,11 @@
 
 <?php include ("views/_templates/header.php"); ?>
 
+<?php $user = UserQuery::create()->findPK($_SESSION["user_id"]); ?>
+
+<div>
+	Hey, <?= $user->getUserName(); ?>. You are logged in.
+</div>
 
 <section class="container-fluid" id="home">
     <div class="row homecontainer">
