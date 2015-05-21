@@ -15,6 +15,8 @@ CREATE TABLE `event`
     `event_user_id` INTEGER NOT NULL,
     `event_type` INTEGER NOT NULL,
     `event_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `event_place` VARCHAR(120) NOT NULL,
+    `event_number_people` INTEGER(2) NOT NULL,
     PRIMARY KEY (`id`),
     INDEX `event_user_id` (`event_user_id`),
     INDEX `event_type` (`event_type`),

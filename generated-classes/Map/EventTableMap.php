@@ -59,7 +59,7 @@ class EventTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 6;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class EventTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /**
      * the column name for the id field
@@ -92,6 +92,16 @@ class EventTableMap extends TableMap
     const COL_EVENT_DATE = 'event.event_date';
 
     /**
+     * the column name for the event_place field
+     */
+    const COL_EVENT_PLACE = 'event.event_place';
+
+    /**
+     * the column name for the event_number_people field
+     */
+    const COL_EVENT_NUMBER_PEOPLE = 'event.event_number_people';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -103,11 +113,11 @@ class EventTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'EventUserId', 'EventType', 'EventDate', ),
-        self::TYPE_CAMELNAME     => array('id', 'eventUserId', 'eventType', 'eventDate', ),
-        self::TYPE_COLNAME       => array(EventTableMap::COL_ID, EventTableMap::COL_EVENT_USER_ID, EventTableMap::COL_EVENT_TYPE, EventTableMap::COL_EVENT_DATE, ),
-        self::TYPE_FIELDNAME     => array('id', 'event_user_id', 'event_type', 'event_date', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('Id', 'EventUserId', 'EventType', 'EventDate', 'EventPlace', 'EventNumberPeople', ),
+        self::TYPE_CAMELNAME     => array('id', 'eventUserId', 'eventType', 'eventDate', 'eventPlace', 'eventNumberPeople', ),
+        self::TYPE_COLNAME       => array(EventTableMap::COL_ID, EventTableMap::COL_EVENT_USER_ID, EventTableMap::COL_EVENT_TYPE, EventTableMap::COL_EVENT_DATE, EventTableMap::COL_EVENT_PLACE, EventTableMap::COL_EVENT_NUMBER_PEOPLE, ),
+        self::TYPE_FIELDNAME     => array('id', 'event_user_id', 'event_type', 'event_date', 'event_place', 'event_number_people', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -117,11 +127,11 @@ class EventTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'EventUserId' => 1, 'EventType' => 2, 'EventDate' => 3, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'eventUserId' => 1, 'eventType' => 2, 'eventDate' => 3, ),
-        self::TYPE_COLNAME       => array(EventTableMap::COL_ID => 0, EventTableMap::COL_EVENT_USER_ID => 1, EventTableMap::COL_EVENT_TYPE => 2, EventTableMap::COL_EVENT_DATE => 3, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'event_user_id' => 1, 'event_type' => 2, 'event_date' => 3, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'EventUserId' => 1, 'EventType' => 2, 'EventDate' => 3, 'EventPlace' => 4, 'EventNumberPeople' => 5, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'eventUserId' => 1, 'eventType' => 2, 'eventDate' => 3, 'eventPlace' => 4, 'eventNumberPeople' => 5, ),
+        self::TYPE_COLNAME       => array(EventTableMap::COL_ID => 0, EventTableMap::COL_EVENT_USER_ID => 1, EventTableMap::COL_EVENT_TYPE => 2, EventTableMap::COL_EVENT_DATE => 3, EventTableMap::COL_EVENT_PLACE => 4, EventTableMap::COL_EVENT_NUMBER_PEOPLE => 5, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'event_user_id' => 1, 'event_type' => 2, 'event_date' => 3, 'event_place' => 4, 'event_number_people' => 5, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -145,6 +155,8 @@ class EventTableMap extends TableMap
         $this->addForeignKey('event_user_id', 'EventUserId', 'INTEGER', 'user', 'user_id', true, null, null);
         $this->addForeignKey('event_type', 'EventType', 'INTEGER', 'sport', 'id', true, null, null);
         $this->addColumn('event_date', 'EventDate', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
+        $this->addColumn('event_place', 'EventPlace', 'VARCHAR', true, 120, null);
+        $this->addColumn('event_number_people', 'EventNumberPeople', 'INTEGER', true, 2, null);
     } // initialize()
 
     /**
@@ -313,11 +325,15 @@ class EventTableMap extends TableMap
             $criteria->addSelectColumn(EventTableMap::COL_EVENT_USER_ID);
             $criteria->addSelectColumn(EventTableMap::COL_EVENT_TYPE);
             $criteria->addSelectColumn(EventTableMap::COL_EVENT_DATE);
+            $criteria->addSelectColumn(EventTableMap::COL_EVENT_PLACE);
+            $criteria->addSelectColumn(EventTableMap::COL_EVENT_NUMBER_PEOPLE);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.event_user_id');
             $criteria->addSelectColumn($alias . '.event_type');
             $criteria->addSelectColumn($alias . '.event_date');
+            $criteria->addSelectColumn($alias . '.event_place');
+            $criteria->addSelectColumn($alias . '.event_number_people');
         }
     }
 

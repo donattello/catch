@@ -24,11 +24,15 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildEventQuery orderByEventUserId($order = Criteria::ASC) Order by the event_user_id column
  * @method     ChildEventQuery orderByEventType($order = Criteria::ASC) Order by the event_type column
  * @method     ChildEventQuery orderByEventDate($order = Criteria::ASC) Order by the event_date column
+ * @method     ChildEventQuery orderByEventPlace($order = Criteria::ASC) Order by the event_place column
+ * @method     ChildEventQuery orderByEventNumberPeople($order = Criteria::ASC) Order by the event_number_people column
  *
  * @method     ChildEventQuery groupById() Group by the id column
  * @method     ChildEventQuery groupByEventUserId() Group by the event_user_id column
  * @method     ChildEventQuery groupByEventType() Group by the event_type column
  * @method     ChildEventQuery groupByEventDate() Group by the event_date column
+ * @method     ChildEventQuery groupByEventPlace() Group by the event_place column
+ * @method     ChildEventQuery groupByEventNumberPeople() Group by the event_number_people column
  *
  * @method     ChildEventQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildEventQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -50,7 +54,9 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildEvent findOneById(int $id) Return the first ChildEvent filtered by the id column
  * @method     ChildEvent findOneByEventUserId(int $event_user_id) Return the first ChildEvent filtered by the event_user_id column
  * @method     ChildEvent findOneByEventType(int $event_type) Return the first ChildEvent filtered by the event_type column
- * @method     ChildEvent findOneByEventDate(string $event_date) Return the first ChildEvent filtered by the event_date column *
+ * @method     ChildEvent findOneByEventDate(string $event_date) Return the first ChildEvent filtered by the event_date column
+ * @method     ChildEvent findOneByEventPlace(string $event_place) Return the first ChildEvent filtered by the event_place column
+ * @method     ChildEvent findOneByEventNumberPeople(int $event_number_people) Return the first ChildEvent filtered by the event_number_people column *
 
  * @method     ChildEvent requirePk($key, ConnectionInterface $con = null) Return the ChildEvent by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEvent requireOne(ConnectionInterface $con = null) Return the first ChildEvent matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -59,12 +65,16 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildEvent requireOneByEventUserId(int $event_user_id) Return the first ChildEvent filtered by the event_user_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEvent requireOneByEventType(int $event_type) Return the first ChildEvent filtered by the event_type column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEvent requireOneByEventDate(string $event_date) Return the first ChildEvent filtered by the event_date column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildEvent requireOneByEventPlace(string $event_place) Return the first ChildEvent filtered by the event_place column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildEvent requireOneByEventNumberPeople(int $event_number_people) Return the first ChildEvent filtered by the event_number_people column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildEvent[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildEvent objects based on current ModelCriteria
  * @method     ChildEvent[]|ObjectCollection findById(int $id) Return ChildEvent objects filtered by the id column
  * @method     ChildEvent[]|ObjectCollection findByEventUserId(int $event_user_id) Return ChildEvent objects filtered by the event_user_id column
  * @method     ChildEvent[]|ObjectCollection findByEventType(int $event_type) Return ChildEvent objects filtered by the event_type column
  * @method     ChildEvent[]|ObjectCollection findByEventDate(string $event_date) Return ChildEvent objects filtered by the event_date column
+ * @method     ChildEvent[]|ObjectCollection findByEventPlace(string $event_place) Return ChildEvent objects filtered by the event_place column
+ * @method     ChildEvent[]|ObjectCollection findByEventNumberPeople(int $event_number_people) Return ChildEvent objects filtered by the event_number_people column
  * @method     ChildEvent[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -157,7 +167,7 @@ abstract class EventQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, event_user_id, event_type, event_date FROM event WHERE id = :p0';
+        $sql = 'SELECT id, event_user_id, event_type, event_date, event_place, event_number_people FROM event WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -415,6 +425,76 @@ abstract class EventQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(EventTableMap::COL_EVENT_DATE, $eventDate, $comparison);
+    }
+
+    /**
+     * Filter the query on the event_place column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByEventPlace('fooValue');   // WHERE event_place = 'fooValue'
+     * $query->filterByEventPlace('%fooValue%'); // WHERE event_place LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $eventPlace The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildEventQuery The current query, for fluid interface
+     */
+    public function filterByEventPlace($eventPlace = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($eventPlace)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $eventPlace)) {
+                $eventPlace = str_replace('*', '%', $eventPlace);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(EventTableMap::COL_EVENT_PLACE, $eventPlace, $comparison);
+    }
+
+    /**
+     * Filter the query on the event_number_people column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByEventNumberPeople(1234); // WHERE event_number_people = 1234
+     * $query->filterByEventNumberPeople(array(12, 34)); // WHERE event_number_people IN (12, 34)
+     * $query->filterByEventNumberPeople(array('min' => 12)); // WHERE event_number_people > 12
+     * </code>
+     *
+     * @param     mixed $eventNumberPeople The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildEventQuery The current query, for fluid interface
+     */
+    public function filterByEventNumberPeople($eventNumberPeople = null, $comparison = null)
+    {
+        if (is_array($eventNumberPeople)) {
+            $useMinMax = false;
+            if (isset($eventNumberPeople['min'])) {
+                $this->addUsingAlias(EventTableMap::COL_EVENT_NUMBER_PEOPLE, $eventNumberPeople['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($eventNumberPeople['max'])) {
+                $this->addUsingAlias(EventTableMap::COL_EVENT_NUMBER_PEOPLE, $eventNumberPeople['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(EventTableMap::COL_EVENT_NUMBER_PEOPLE, $eventNumberPeople, $comparison);
     }
 
     /**

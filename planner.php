@@ -62,6 +62,8 @@ Your Events
 	<div>
 		<h3><?= $event->getSport()->getSport(); ?></h3>
 		<p>On: <?= $event->getEventDate('d-m-y H:i'); ?></p>
+        <p><?= $event->getEventPlace(); ?></p>
+        <p><?= $event->getEventNumberPeople(); ?></p>
 
 	</div>
 <?php } ?>

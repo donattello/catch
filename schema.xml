@@ -5,6 +5,8 @@
     <column name="event_user_id" phpName="EventUserId" type="INTEGER" required="true"/>
     <column name="event_type" phpName="EventType" type="INTEGER" required="true"/>
     <column name="event_date" phpName="EventDate" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+    <column name="event_place" phpName="EventPlace" type="VARCHAR" size="120" required="true"/>
+    <column name="event_number_people" phpName="EventNumberPeople" type="INTEGER" size="2" required="true"/>
     <foreign-key foreignTable="user" name="event_ibfk_1">
       <reference local="event_user_id" foreign="user_id"/>
     </foreign-key>

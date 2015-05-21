@@ -91,6 +91,18 @@ abstract class Event implements ActiveRecordInterface
     protected $event_date;
 
     /**
+     * The value for the event_place field.
+     * @var        string
+     */
+    protected $event_place;
+
+    /**
+     * The value for the event_number_people field.
+     * @var        int
+     */
+    protected $event_number_people;
+
+    /**
      * @var        ChildUser
      */
     protected $aUser;
@@ -388,6 +400,26 @@ abstract class Event implements ActiveRecordInterface
     }
 
     /**
+     * Get the [event_place] column value.
+     *
+     * @return string
+     */
+    public function getEventPlace()
+    {
+        return $this->event_place;
+    }
+
+    /**
+     * Get the [event_number_people] column value.
+     *
+     * @return int
+     */
+    public function getEventNumberPeople()
+    {
+        return $this->event_number_people;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param int $v new value
@@ -476,6 +508,46 @@ abstract class Event implements ActiveRecordInterface
     } // setEventDate()
 
     /**
+     * Set the value of [event_place] column.
+     *
+     * @param string $v new value
+     * @return $this|\Event The current object (for fluent API support)
+     */
+    public function setEventPlace($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->event_place !== $v) {
+            $this->event_place = $v;
+            $this->modifiedColumns[EventTableMap::COL_EVENT_PLACE] = true;
+        }
+
+        return $this;
+    } // setEventPlace()
+
+    /**
+     * Set the value of [event_number_people] column.
+     *
+     * @param int $v new value
+     * @return $this|\Event The current object (for fluent API support)
+     */
+    public function setEventNumberPeople($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->event_number_people !== $v) {
+            $this->event_number_people = $v;
+            $this->modifiedColumns[EventTableMap::COL_EVENT_NUMBER_PEOPLE] = true;
+        }
+
+        return $this;
+    } // setEventNumberPeople()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -525,6 +597,12 @@ abstract class Event implements ActiveRecordInterface
                 $col = null;
             }
             $this->event_date = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : EventTableMap::translateFieldName('EventPlace', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->event_place = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : EventTableMap::translateFieldName('EventNumberPeople', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->event_number_people = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -533,7 +611,7 @@ abstract class Event implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 4; // 4 = EventTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = EventTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Event'), 0, $e);
@@ -769,6 +847,12 @@ abstract class Event implements ActiveRecordInterface
         if ($this->isColumnModified(EventTableMap::COL_EVENT_DATE)) {
             $modifiedColumns[':p' . $index++]  = 'event_date';
         }
+        if ($this->isColumnModified(EventTableMap::COL_EVENT_PLACE)) {
+            $modifiedColumns[':p' . $index++]  = 'event_place';
+        }
+        if ($this->isColumnModified(EventTableMap::COL_EVENT_NUMBER_PEOPLE)) {
+            $modifiedColumns[':p' . $index++]  = 'event_number_people';
+        }
 
         $sql = sprintf(
             'INSERT INTO event (%s) VALUES (%s)',
@@ -791,6 +875,12 @@ abstract class Event implements ActiveRecordInterface
                         break;
                     case 'event_date':
                         $stmt->bindValue($identifier, $this->event_date ? $this->event_date->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
+                        break;
+                    case 'event_place':
+                        $stmt->bindValue($identifier, $this->event_place, PDO::PARAM_STR);
+                        break;
+                    case 'event_number_people':
+                        $stmt->bindValue($identifier, $this->event_number_people, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -866,6 +956,12 @@ abstract class Event implements ActiveRecordInterface
             case 3:
                 return $this->getEventDate();
                 break;
+            case 4:
+                return $this->getEventPlace();
+                break;
+            case 5:
+                return $this->getEventNumberPeople();
+                break;
             default:
                 return null;
                 break;
@@ -900,6 +996,8 @@ abstract class Event implements ActiveRecordInterface
             $keys[1] => $this->getEventUserId(),
             $keys[2] => $this->getEventType(),
             $keys[3] => $this->getEventDate(),
+            $keys[4] => $this->getEventPlace(),
+            $keys[5] => $this->getEventNumberPeople(),
         );
 
         $utc = new \DateTimeZone('utc');
@@ -991,6 +1089,12 @@ abstract class Event implements ActiveRecordInterface
             case 3:
                 $this->setEventDate($value);
                 break;
+            case 4:
+                $this->setEventPlace($value);
+                break;
+            case 5:
+                $this->setEventNumberPeople($value);
+                break;
         } // switch()
 
         return $this;
@@ -1028,6 +1132,12 @@ abstract class Event implements ActiveRecordInterface
         }
         if (array_key_exists($keys[3], $arr)) {
             $this->setEventDate($arr[$keys[3]]);
+        }
+        if (array_key_exists($keys[4], $arr)) {
+            $this->setEventPlace($arr[$keys[4]]);
+        }
+        if (array_key_exists($keys[5], $arr)) {
+            $this->setEventNumberPeople($arr[$keys[5]]);
         }
     }
 
@@ -1081,6 +1191,12 @@ abstract class Event implements ActiveRecordInterface
         }
         if ($this->isColumnModified(EventTableMap::COL_EVENT_DATE)) {
             $criteria->add(EventTableMap::COL_EVENT_DATE, $this->event_date);
+        }
+        if ($this->isColumnModified(EventTableMap::COL_EVENT_PLACE)) {
+            $criteria->add(EventTableMap::COL_EVENT_PLACE, $this->event_place);
+        }
+        if ($this->isColumnModified(EventTableMap::COL_EVENT_NUMBER_PEOPLE)) {
+            $criteria->add(EventTableMap::COL_EVENT_NUMBER_PEOPLE, $this->event_number_people);
         }
 
         return $criteria;
@@ -1171,6 +1287,8 @@ abstract class Event implements ActiveRecordInterface
         $copyObj->setEventUserId($this->getEventUserId());
         $copyObj->setEventType($this->getEventType());
         $copyObj->setEventDate($this->getEventDate());
+        $copyObj->setEventPlace($this->getEventPlace());
+        $copyObj->setEventNumberPeople($this->getEventNumberPeople());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1318,6 +1436,8 @@ abstract class Event implements ActiveRecordInterface
         $this->event_user_id = null;
         $this->event_type = null;
         $this->event_date = null;
+        $this->event_place = null;
+        $this->event_number_people = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->applyDefaultValues();
