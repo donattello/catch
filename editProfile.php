@@ -1,7 +1,7 @@
  <?php include "views/_templates/header.php"; ?>
    
 <form action="processing/add-profile.php" method="post">
-    <input type="text" name="user_ID">
+    <input type="text" name="name">
     
     <input type="text" name="age" placeholder="age" required>
     

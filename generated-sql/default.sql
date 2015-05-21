@@ -51,8 +51,8 @@ CREATE TABLE `user`
 (
     `user_id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_name` VARCHAR(64) NOT NULL,
-    `user_password_hash` VARCHAR(255) NOT NULL,
-    `user_email` VARCHAR(64) NOT NULL,
+    `user_password_hash` VARCHAR(255),
+    `user_email` VARCHAR(64),
     `bio` TEXT,
     `user_age` INTEGER(2),
     `user_gender` VARCHAR(6),

@@ -1,17 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CATCH</title>
-<link href="css/bootstrap.css" rel="stylesheet" media="screen">
-<link href="css/mystyles.css" rel="stylesheet" media="screen">
-</head>
- 
-<body id="newMatches" class="home">
-    <!-- home -->
-    <?php include "views/_templates/header.php"; ?>
+<?php include "views/_templates/header.php"; ?>
+
+<?php $user = UserQuery::create()->findPK($_SESSION["user_id"]); ?>
     
-  
-    
-</body>
-</html>
+<?php foreach($user->getUsers() as $users) { ?>
+	<div>
+		<h3><?= $users->getUserName(); ?></h3>
+		<p> <?= $users->getUserAge(); ?></p>
+        <p><?= $users->getUserGender(); ?></p>
+        <p><?= $users->getBio(); ?></p>
+
+	</div>
+<?php } ?>
+
+
+<?php
+	$users = UserQuery::create()
+		->limit(100)
+		->orderByUserId('desc')
+		->find();
+?>
+
+
+
+<?php include ("views/_templates/footer.php"); ?>

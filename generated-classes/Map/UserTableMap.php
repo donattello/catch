@@ -158,8 +158,8 @@ class UserTableMap extends TableMap
         // columns
         $this->addPrimaryKey('user_id', 'UserId', 'INTEGER', true, null, null);
         $this->addColumn('user_name', 'UserName', 'VARCHAR', true, 64, null);
-        $this->addColumn('user_password_hash', 'UserPasswordHash', 'VARCHAR', true, 255, null);
-        $this->addColumn('user_email', 'UserEmail', 'VARCHAR', true, 64, null);
+        $this->addColumn('user_password_hash', 'UserPasswordHash', 'VARCHAR', false, 255, null);
+        $this->addColumn('user_email', 'UserEmail', 'VARCHAR', false, 64, null);
         $this->addColumn('bio', 'Bio', 'LONGVARCHAR', false, null, null);
         $this->addColumn('user_age', 'UserAge', 'INTEGER', false, 2, null);
         $this->addColumn('user_gender', 'UserGender', 'VARCHAR', false, 6, null);

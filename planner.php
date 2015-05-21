@@ -43,15 +43,17 @@
 
 
 
+<!--
 <?php $user = UserQuery::create()->findPK($_SESSION["user_id"]); ?>
 
 <div>
-	Hey, <?= $user->getUserName(); ?>. You are logged in.
+	Hey, <?//= $user->getUserName(); ?>. You are logged in.
 </div>
 
 <div>
-	Bio: <?= $user->getBio(); ?>
+	Bio: <?//= $user->getBio(); ?>
 </div>
+-->
 
 
 
