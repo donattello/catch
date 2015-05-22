@@ -31,7 +31,7 @@
         </div><!--row-->
        
             <!-- because people were asking: "index.php?logout" is just my simplified form of "index.php?logout=true" -->
-            <a href="login_user.php?logout" id="signOutBtn">Sign Out</a>         
+            <a href="index.php?logout" id="signOutBtn">Sign Out</a>         
        
 <!--            <button type="button" id="signOutBtn">Sign Out</button>-->
     </section>

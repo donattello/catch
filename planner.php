@@ -44,8 +44,6 @@
 
 
 <!--
-<?php $user = UserQuery::create()->findPK($_SESSION["user_id"]); ?>
-
 <div>
 	Hey, <?//= $user->getUserName(); ?>. You are logged in.
 </div>
@@ -55,7 +53,7 @@
 </div>
 -->
 
-
+<?php $user = UserQuery::create()->findPK($_SESSION["user_id"]); ?>
 
 <div>
 Your Events

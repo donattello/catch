@@ -1,13 +1,13 @@
  <?php include "views/_templates/header.php"; ?>
+
+<h1><?= $_SESSION["user_name"] ?></h1>
    
 <form action="processing/add-profile.php" method="post">
-    <input type="text" name="name">
-    
     <input type="text" name="age" placeholder="age" required>
     
     <select name="gender">
-        <option value="1">male</option>
-        <option value="2">female</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
     </select>
     
      <?php include ("views/_templates/get-event-types.php"); ?>

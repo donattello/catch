@@ -22,16 +22,16 @@ if(!empty($submitted)){
         //|| empty($eventType)
     }
     
-    $newUser = new User();
-        $newUser->setUserName($_SESSION["user_id"]);
-        //$newUser->setUserName($user_id);
-        $newUser->setUserAge($age);
-        $newUser->setUserGender($gender);
-        //$newUser->setUserEventType($eventType);
-        $newUser->setBio($userBio);
+    $editUser = UserQuery::create()->findPK($_SESSION["user_id"]);
+    var_dump($editUser->toArray());
     
-     //var_dump($newUser->toArray());
-    $newUser->save();
+    echo "<br>";
+    
+    $editUser->setUserAge($age);
+    $editUser->setUserGender($gender);
+    $editUser->setBio($userBio);
+    
+    $editUser->save();
     
     $_SESSION["message"] = "Your profile has been updated";
 

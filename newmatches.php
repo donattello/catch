@@ -1,24 +1,24 @@
 <?php include "views/_templates/header.php"; ?>
 
-<?php $user = UserQuery::create()->findPK($_SESSION["user_id"]); ?>
+<?php
+	$allUsers = UserQuery::create()
+		->limit(100)
+		->orderByUserId('desc')
+		->find();
+?>
     
-<?php foreach($user->getUsers() as $users) { ?>
+<?php foreach($allUsers as $user) { ?>
 	<div>
-		<h3><?= $users->getUserName(); ?></h3>
-		<p> <?= $users->getUserAge(); ?></p>
-        <p><?= $users->getUserGender(); ?></p>
-        <p><?= $users->getBio(); ?></p>
+		<h3><?= $user->getUserName(); ?></h3>
+		<p> <?= $user->getUserAge(); ?></p>
+        <p><?= $user->getUserGender(); ?></p>
+        <p><?= $user->getBio(); ?></p>
 
 	</div>
 <?php } ?>
 
 
-<?php
-	$users = UserQuery::create()
-		->limit(100)
-		->orderByUserId('desc')
-		->find();
-?>
+
 
 
 
