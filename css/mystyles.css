@@ -263,3 +263,45 @@ h3 {
 .formFields{
     background-color: pink;
 }
+
+.description {
+    color: #706e6e;
+    background-color: #F7f7f7;
+    height: 50px;
+    border-top-color: #706e6e;
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-bottom-color: #706e6e;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    margin: 2% 0;
+}
+
+.text {
+    width: 100%;
+}
+
+.btn-primary {
+    background-color: #2bc0d4;
+    width: 100%;
+}
+
+.selects {
+    width: 100%;
+    border-style: none;
+    color: #706e6e; 
+}
+
+.text-area {
+    width: 100%;
+    border-style: none;
+    background-color: #F7f7f7;
+}
+
+.description h3 {
+    margin: 7% auto;
+}
+
+.name{
+    padding-left: 5%;
+}

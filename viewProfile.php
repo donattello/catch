@@ -16,7 +16,7 @@ $userFriends = UserFriendsQuery::create()
 public static function getFriends() {
     $userFriends = UserFriendsQuery::create()
         ->filterByUserId(Session::get('user_id'))
-        ->select('friend') //name of the table in the database
+        ->select('friend') //name of the table in the database?
         ->find();
     return $userFriends->toArray();
 }

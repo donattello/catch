@@ -14,7 +14,11 @@ if(!empty($submitted)){
     //$eventType = $_POST["event-type"];
     $userBio = $_POST["user_bio"];
     
+    
+    
+    
     if(empty($age) || empty($gender) || empty($userBio)) {
+        
 		$_SESSION["message"] = "Please fill in all fields";
 	    header("Location: ../editProfile.php");
 		exit;
@@ -23,7 +27,7 @@ if(!empty($submitted)){
     }
     
     $editUser = UserQuery::create()->findPK($_SESSION["user_id"]);
-    var_dump($editUser->toArray());
+    //var_dump($editUser->toArray());
     
     echo "<br>";
     
@@ -44,4 +48,18 @@ if(!empty($submitted)){
 }
 
 ?>
+
+<!--
+$avatar = $_FILES["avatar"];
+
+if (empty($_FILES["avatar"] ["tem_name"]) === false) {
+        $file_ext = end(explode('.', $_FILE["avatar"]["name"]));
+            
+        if(in_array(strtolower($file_ext), array('jpg', 'jpeg', 'png', 'gif')) === false){
+            
+        }
+    }
+
+|| empty($_FILES["avatar"]["temp_name"]) ? false : $_FILES["avatar"]["tmp_name"]
+-->
 
