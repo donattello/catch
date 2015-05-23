@@ -13,6 +13,7 @@
 		<p> <?= $user->getUserAge(); ?></p>
         <p><?= $user->getUserGender(); ?></p>
         <p><?= $user->getBio(); ?></p>
+        <input type="submit" value="Add Friend" />
 
 	</div>
 <?php } ?>

@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <database name="default" defaultIdMethod="native" defaultPhpNamingMethod="underscore">
+  <table name="comments" idMethod="native" phpName="Comments">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="event_id" phpName="EventId" type="INTEGER"/>
+    <column name="user_submitting" phpName="UserSubmitting" type="INTEGER"/>
+    <column name="comment_field" phpName="CommentField" type="LONGVARCHAR"/>
+    <foreign-key foreignTable="event" name="comments_ibfk_1">
+      <reference local="event_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="user" name="comments_ibfk_2">
+      <reference local="user_submitting" foreign="user_id"/>
+    </foreign-key>
+    <index name="event_id">
+      <index-column name="event_id"/>
+    </index>
+    <index name="user_submitting">
+      <index-column name="user_submitting"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
   <table name="event" idMethod="native" phpName="Event">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="event_user_id" phpName="EventUserId" type="INTEGER" required="true"/>
@@ -18,6 +39,26 @@
     </index>
     <index name="event_type">
       <index-column name="event_type"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="friend" idMethod="native" phpName="Friend">
+    <column name="friend_t_id" phpName="FriendTId" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="user_id" phpName="UserId" type="INTEGER" required="true"/>
+    <column name="friend_id" phpName="FriendId" type="INTEGER" required="true"/>
+    <foreign-key foreignTable="user" name="friend_ibfk_1">
+      <reference local="user_id" foreign="user_id"/>
+    </foreign-key>
+    <foreign-key foreignTable="user" name="friend_ibfk_2">
+      <reference local="friend_id" foreign="user_id"/>
+    </foreign-key>
+    <index name="user_id">
+      <index-column name="user_id"/>
+    </index>
+    <index name="friend_id">
+      <index-column name="friend_id"/>
     </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>

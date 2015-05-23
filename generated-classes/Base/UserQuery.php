@@ -40,11 +40,23 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUserQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     ChildUserQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
+ * @method     ChildUserQuery leftJoinComments($relationAlias = null) Adds a LEFT JOIN clause to the query using the Comments relation
+ * @method     ChildUserQuery rightJoinComments($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Comments relation
+ * @method     ChildUserQuery innerJoinComments($relationAlias = null) Adds a INNER JOIN clause to the query using the Comments relation
+ *
  * @method     ChildUserQuery leftJoinEvent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Event relation
  * @method     ChildUserQuery rightJoinEvent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Event relation
  * @method     ChildUserQuery innerJoinEvent($relationAlias = null) Adds a INNER JOIN clause to the query using the Event relation
  *
- * @method     \EventQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     ChildUserQuery leftJoinFriendRelatedByUserId($relationAlias = null) Adds a LEFT JOIN clause to the query using the FriendRelatedByUserId relation
+ * @method     ChildUserQuery rightJoinFriendRelatedByUserId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FriendRelatedByUserId relation
+ * @method     ChildUserQuery innerJoinFriendRelatedByUserId($relationAlias = null) Adds a INNER JOIN clause to the query using the FriendRelatedByUserId relation
+ *
+ * @method     ChildUserQuery leftJoinFriendRelatedByFriendId($relationAlias = null) Adds a LEFT JOIN clause to the query using the FriendRelatedByFriendId relation
+ * @method     ChildUserQuery rightJoinFriendRelatedByFriendId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FriendRelatedByFriendId relation
+ * @method     ChildUserQuery innerJoinFriendRelatedByFriendId($relationAlias = null) Adds a INNER JOIN clause to the query using the FriendRelatedByFriendId relation
+ *
+ * @method     \CommentsQuery|\EventQuery|\FriendQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildUser findOne(ConnectionInterface $con = null) Return the first ChildUser matching the query
  * @method     ChildUser findOneOrCreate(ConnectionInterface $con = null) Return the first ChildUser matching the query, or a new ChildUser object populated from the query conditions when no match is found
@@ -486,6 +498,79 @@ abstract class UserQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related \Comments object
+     *
+     * @param \Comments|ObjectCollection $comments the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildUserQuery The current query, for fluid interface
+     */
+    public function filterByComments($comments, $comparison = null)
+    {
+        if ($comments instanceof \Comments) {
+            return $this
+                ->addUsingAlias(UserTableMap::COL_USER_ID, $comments->getUserSubmitting(), $comparison);
+        } elseif ($comments instanceof ObjectCollection) {
+            return $this
+                ->useCommentsQuery()
+                ->filterByPrimaryKeys($comments->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByComments() only accepts arguments of type \Comments or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Comments relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildUserQuery The current query, for fluid interface
+     */
+    public function joinComments($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Comments');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Comments');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Comments relation Comments object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \CommentsQuery A secondary query class using the current class as primary query
+     */
+    public function useCommentsQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinComments($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Comments', '\CommentsQuery');
+    }
+
+    /**
      * Filter the query by a related \Event object
      *
      * @param \Event|ObjectCollection $event the related object to use as filter
@@ -556,6 +641,152 @@ abstract class UserQuery extends ModelCriteria
         return $this
             ->joinEvent($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Event', '\EventQuery');
+    }
+
+    /**
+     * Filter the query by a related \Friend object
+     *
+     * @param \Friend|ObjectCollection $friend the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildUserQuery The current query, for fluid interface
+     */
+    public function filterByFriendRelatedByUserId($friend, $comparison = null)
+    {
+        if ($friend instanceof \Friend) {
+            return $this
+                ->addUsingAlias(UserTableMap::COL_USER_ID, $friend->getUserId(), $comparison);
+        } elseif ($friend instanceof ObjectCollection) {
+            return $this
+                ->useFriendRelatedByUserIdQuery()
+                ->filterByPrimaryKeys($friend->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByFriendRelatedByUserId() only accepts arguments of type \Friend or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the FriendRelatedByUserId relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildUserQuery The current query, for fluid interface
+     */
+    public function joinFriendRelatedByUserId($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('FriendRelatedByUserId');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'FriendRelatedByUserId');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the FriendRelatedByUserId relation Friend object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \FriendQuery A secondary query class using the current class as primary query
+     */
+    public function useFriendRelatedByUserIdQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinFriendRelatedByUserId($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'FriendRelatedByUserId', '\FriendQuery');
+    }
+
+    /**
+     * Filter the query by a related \Friend object
+     *
+     * @param \Friend|ObjectCollection $friend the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildUserQuery The current query, for fluid interface
+     */
+    public function filterByFriendRelatedByFriendId($friend, $comparison = null)
+    {
+        if ($friend instanceof \Friend) {
+            return $this
+                ->addUsingAlias(UserTableMap::COL_USER_ID, $friend->getFriendId(), $comparison);
+        } elseif ($friend instanceof ObjectCollection) {
+            return $this
+                ->useFriendRelatedByFriendIdQuery()
+                ->filterByPrimaryKeys($friend->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByFriendRelatedByFriendId() only accepts arguments of type \Friend or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the FriendRelatedByFriendId relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildUserQuery The current query, for fluid interface
+     */
+    public function joinFriendRelatedByFriendId($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('FriendRelatedByFriendId');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'FriendRelatedByFriendId');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the FriendRelatedByFriendId relation Friend object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \FriendQuery A secondary query class using the current class as primary query
+     */
+    public function useFriendRelatedByFriendIdQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinFriendRelatedByFriendId($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'FriendRelatedByFriendId', '\FriendQuery');
     }
 
     /**

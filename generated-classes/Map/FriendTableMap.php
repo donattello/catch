@@ -2,8 +2,8 @@
 
 namespace Map;
 
-use \User;
-use \UserQuery;
+use \Friend;
+use \FriendQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'user' table.
+ * This class defines the structure of the 'friend' table.
  *
  *
  *
@@ -26,7 +26,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class UserTableMap extends TableMap
+class FriendTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -34,7 +34,7 @@ class UserTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.UserTableMap';
+    const CLASS_NAME = '.Map.FriendTableMap';
 
     /**
      * The default database name for this class
@@ -44,22 +44,22 @@ class UserTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'user';
+    const TABLE_NAME = 'friend';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\User';
+    const OM_CLASS = '\\Friend';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'User';
+    const CLASS_DEFAULT = 'Friend';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 3;
 
     /**
      * The number of lazy-loaded columns
@@ -69,42 +69,22 @@ class UserTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 3;
+
+    /**
+     * the column name for the friend_t_id field
+     */
+    const COL_FRIEND_T_ID = 'friend.friend_t_id';
 
     /**
      * the column name for the user_id field
      */
-    const COL_USER_ID = 'user.user_id';
+    const COL_USER_ID = 'friend.user_id';
 
     /**
-     * the column name for the user_name field
+     * the column name for the friend_id field
      */
-    const COL_USER_NAME = 'user.user_name';
-
-    /**
-     * the column name for the user_password_hash field
-     */
-    const COL_USER_PASSWORD_HASH = 'user.user_password_hash';
-
-    /**
-     * the column name for the user_email field
-     */
-    const COL_USER_EMAIL = 'user.user_email';
-
-    /**
-     * the column name for the bio field
-     */
-    const COL_BIO = 'user.bio';
-
-    /**
-     * the column name for the user_age field
-     */
-    const COL_USER_AGE = 'user.user_age';
-
-    /**
-     * the column name for the user_gender field
-     */
-    const COL_USER_GENDER = 'user.user_gender';
+    const COL_FRIEND_ID = 'friend.friend_id';
 
     /**
      * The default string format for model objects of the related table
@@ -118,11 +98,11 @@ class UserTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('UserId', 'UserName', 'UserPasswordHash', 'UserEmail', 'Bio', 'UserAge', 'UserGender', ),
-        self::TYPE_CAMELNAME     => array('userId', 'userName', 'userPasswordHash', 'userEmail', 'bio', 'userAge', 'userGender', ),
-        self::TYPE_COLNAME       => array(UserTableMap::COL_USER_ID, UserTableMap::COL_USER_NAME, UserTableMap::COL_USER_PASSWORD_HASH, UserTableMap::COL_USER_EMAIL, UserTableMap::COL_BIO, UserTableMap::COL_USER_AGE, UserTableMap::COL_USER_GENDER, ),
-        self::TYPE_FIELDNAME     => array('user_id', 'user_name', 'user_password_hash', 'user_email', 'bio', 'user_age', 'user_gender', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('FriendTId', 'UserId', 'FriendId', ),
+        self::TYPE_CAMELNAME     => array('friendTId', 'userId', 'friendId', ),
+        self::TYPE_COLNAME       => array(FriendTableMap::COL_FRIEND_T_ID, FriendTableMap::COL_USER_ID, FriendTableMap::COL_FRIEND_ID, ),
+        self::TYPE_FIELDNAME     => array('friend_t_id', 'user_id', 'friend_id', ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -132,11 +112,11 @@ class UserTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('UserId' => 0, 'UserName' => 1, 'UserPasswordHash' => 2, 'UserEmail' => 3, 'Bio' => 4, 'UserAge' => 5, 'UserGender' => 6, ),
-        self::TYPE_CAMELNAME     => array('userId' => 0, 'userName' => 1, 'userPasswordHash' => 2, 'userEmail' => 3, 'bio' => 4, 'userAge' => 5, 'userGender' => 6, ),
-        self::TYPE_COLNAME       => array(UserTableMap::COL_USER_ID => 0, UserTableMap::COL_USER_NAME => 1, UserTableMap::COL_USER_PASSWORD_HASH => 2, UserTableMap::COL_USER_EMAIL => 3, UserTableMap::COL_BIO => 4, UserTableMap::COL_USER_AGE => 5, UserTableMap::COL_USER_GENDER => 6, ),
-        self::TYPE_FIELDNAME     => array('user_id' => 0, 'user_name' => 1, 'user_password_hash' => 2, 'user_email' => 3, 'bio' => 4, 'user_age' => 5, 'user_gender' => 6, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('FriendTId' => 0, 'UserId' => 1, 'FriendId' => 2, ),
+        self::TYPE_CAMELNAME     => array('friendTId' => 0, 'userId' => 1, 'friendId' => 2, ),
+        self::TYPE_COLNAME       => array(FriendTableMap::COL_FRIEND_T_ID => 0, FriendTableMap::COL_USER_ID => 1, FriendTableMap::COL_FRIEND_ID => 2, ),
+        self::TYPE_FIELDNAME     => array('friend_t_id' => 0, 'user_id' => 1, 'friend_id' => 2, ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -149,20 +129,16 @@ class UserTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('user');
-        $this->setPhpName('User');
+        $this->setName('friend');
+        $this->setPhpName('Friend');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\User');
+        $this->setClassName('\\Friend');
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('user_id', 'UserId', 'INTEGER', true, null, null);
-        $this->addColumn('user_name', 'UserName', 'VARCHAR', true, 64, null);
-        $this->addColumn('user_password_hash', 'UserPasswordHash', 'VARCHAR', false, 255, null);
-        $this->addColumn('user_email', 'UserEmail', 'VARCHAR', false, 64, null);
-        $this->addColumn('bio', 'Bio', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('user_age', 'UserAge', 'INTEGER', false, 2, null);
-        $this->addColumn('user_gender', 'UserGender', 'VARCHAR', false, 6, null);
+        $this->addPrimaryKey('friend_t_id', 'FriendTId', 'INTEGER', true, null, null);
+        $this->addForeignKey('user_id', 'UserId', 'INTEGER', 'user', 'user_id', true, null, null);
+        $this->addForeignKey('friend_id', 'FriendId', 'INTEGER', 'user', 'user_id', true, null, null);
     } // initialize()
 
     /**
@@ -170,34 +146,20 @@ class UserTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Comments', '\\Comments', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':user_submitting',
-    1 => ':user_id',
-  ),
-), null, null, 'Commentss', false);
-        $this->addRelation('Event', '\\Event', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':event_user_id',
-    1 => ':user_id',
-  ),
-), null, null, 'Events', false);
-        $this->addRelation('FriendRelatedByUserId', '\\Friend', RelationMap::ONE_TO_MANY, array (
+        $this->addRelation('UserRelatedByUserId', '\\User', RelationMap::MANY_TO_ONE, array (
   0 =>
   array (
     0 => ':user_id',
     1 => ':user_id',
   ),
-), null, null, 'FriendsRelatedByUserId', false);
-        $this->addRelation('FriendRelatedByFriendId', '\\Friend', RelationMap::ONE_TO_MANY, array (
+), null, null, null, false);
+        $this->addRelation('UserRelatedByFriendId', '\\User', RelationMap::MANY_TO_ONE, array (
   0 =>
   array (
     0 => ':friend_id',
     1 => ':user_id',
   ),
-), null, null, 'FriendsRelatedByFriendId', false);
+), null, null, null, false);
     } // buildRelations()
 
     /**
@@ -216,11 +178,11 @@ class UserTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('FriendTId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)];
+        return (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('FriendTId', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -240,7 +202,7 @@ class UserTableMap extends TableMap
         return (int) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 0 + $offset
-                : self::translateFieldName('UserId', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('FriendTId', TableMap::TYPE_PHPNAME, $indexType)
         ];
     }
 
@@ -257,7 +219,7 @@ class UserTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? UserTableMap::CLASS_DEFAULT : UserTableMap::OM_CLASS;
+        return $withPrefix ? FriendTableMap::CLASS_DEFAULT : FriendTableMap::OM_CLASS;
     }
 
     /**
@@ -271,22 +233,22 @@ class UserTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (User object, last column rank)
+     * @return array           (Friend object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = UserTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = UserTableMap::getInstanceFromPool($key))) {
+        $key = FriendTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = FriendTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + UserTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + FriendTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = UserTableMap::OM_CLASS;
-            /** @var User $obj */
+            $cls = FriendTableMap::OM_CLASS;
+            /** @var Friend $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            UserTableMap::addInstanceToPool($obj, $key);
+            FriendTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -309,18 +271,18 @@ class UserTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = UserTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = UserTableMap::getInstanceFromPool($key))) {
+            $key = FriendTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = FriendTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var User $obj */
+                /** @var Friend $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                UserTableMap::addInstanceToPool($obj, $key);
+                FriendTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -341,21 +303,13 @@ class UserTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(UserTableMap::COL_USER_ID);
-            $criteria->addSelectColumn(UserTableMap::COL_USER_NAME);
-            $criteria->addSelectColumn(UserTableMap::COL_USER_PASSWORD_HASH);
-            $criteria->addSelectColumn(UserTableMap::COL_USER_EMAIL);
-            $criteria->addSelectColumn(UserTableMap::COL_BIO);
-            $criteria->addSelectColumn(UserTableMap::COL_USER_AGE);
-            $criteria->addSelectColumn(UserTableMap::COL_USER_GENDER);
+            $criteria->addSelectColumn(FriendTableMap::COL_FRIEND_T_ID);
+            $criteria->addSelectColumn(FriendTableMap::COL_USER_ID);
+            $criteria->addSelectColumn(FriendTableMap::COL_FRIEND_ID);
         } else {
+            $criteria->addSelectColumn($alias . '.friend_t_id');
             $criteria->addSelectColumn($alias . '.user_id');
-            $criteria->addSelectColumn($alias . '.user_name');
-            $criteria->addSelectColumn($alias . '.user_password_hash');
-            $criteria->addSelectColumn($alias . '.user_email');
-            $criteria->addSelectColumn($alias . '.bio');
-            $criteria->addSelectColumn($alias . '.user_age');
-            $criteria->addSelectColumn($alias . '.user_gender');
+            $criteria->addSelectColumn($alias . '.friend_id');
         }
     }
 
@@ -368,7 +322,7 @@ class UserTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(UserTableMap::DATABASE_NAME)->getTable(UserTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(FriendTableMap::DATABASE_NAME)->getTable(FriendTableMap::TABLE_NAME);
     }
 
     /**
@@ -376,16 +330,16 @@ class UserTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(UserTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(UserTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new UserTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(FriendTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(FriendTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new FriendTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a User or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Friend or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or User object or primary key or array of primary keys
+     * @param mixed               $values Criteria or Friend object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -396,27 +350,27 @@ class UserTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(UserTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FriendTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \User) { // it's a model object
+        } elseif ($values instanceof \Friend) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(UserTableMap::DATABASE_NAME);
-            $criteria->add(UserTableMap::COL_USER_ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(FriendTableMap::DATABASE_NAME);
+            $criteria->add(FriendTableMap::COL_FRIEND_T_ID, (array) $values, Criteria::IN);
         }
 
-        $query = UserQuery::create()->mergeWith($criteria);
+        $query = FriendQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            UserTableMap::clearInstancePool();
+            FriendTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                UserTableMap::removeInstanceFromPool($singleval);
+                FriendTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -424,20 +378,20 @@ class UserTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the user table.
+     * Deletes all rows from the friend table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return UserQuery::create()->doDeleteAll($con);
+        return FriendQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a User or Criteria object.
+     * Performs an INSERT on the database, given a Friend or Criteria object.
      *
-     * @param mixed               $criteria Criteria or User object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or Friend object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -446,22 +400,22 @@ class UserTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(UserTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FriendTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from User object
+            $criteria = $criteria->buildCriteria(); // build Criteria from Friend object
         }
 
-        if ($criteria->containsKey(UserTableMap::COL_USER_ID) && $criteria->keyContainsValue(UserTableMap::COL_USER_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.UserTableMap::COL_USER_ID.')');
+        if ($criteria->containsKey(FriendTableMap::COL_FRIEND_T_ID) && $criteria->keyContainsValue(FriendTableMap::COL_FRIEND_T_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.FriendTableMap::COL_FRIEND_T_ID.')');
         }
 
 
         // Set the correct dbName
-        $query = UserQuery::create()->mergeWith($criteria);
+        $query = FriendQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -470,7 +424,7 @@ class UserTableMap extends TableMap
         });
     }
 
-} // UserTableMap
+} // FriendTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-UserTableMap::buildTableMap();
+FriendTableMap::buildTableMap();

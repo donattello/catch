@@ -4,6 +4,29 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ---------------------------------------------------------------------
+-- comments
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `comments`;
+
+CREATE TABLE `comments`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `event_id` INTEGER,
+    `user_submitting` INTEGER,
+    `comment_field` TEXT,
+    PRIMARY KEY (`id`),
+    INDEX `event_id` (`event_id`),
+    INDEX `user_submitting` (`user_submitting`),
+    CONSTRAINT `comments_ibfk_1`
+        FOREIGN KEY (`event_id`)
+        REFERENCES `event` (`id`),
+    CONSTRAINT `comments_ibfk_2`
+        FOREIGN KEY (`user_submitting`)
+        REFERENCES `user` (`user_id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- event
 -- ---------------------------------------------------------------------
 
@@ -26,6 +49,28 @@ CREATE TABLE `event`
     CONSTRAINT `event_ibfk_2`
         FOREIGN KEY (`event_type`)
         REFERENCES `sport` (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- friend
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `friend`;
+
+CREATE TABLE `friend`
+(
+    `friend_t_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `user_id` INTEGER NOT NULL,
+    `friend_id` INTEGER NOT NULL,
+    PRIMARY KEY (`friend_t_id`),
+    INDEX `user_id` (`user_id`),
+    INDEX `friend_id` (`friend_id`),
+    CONSTRAINT `friend_ibfk_1`
+        FOREIGN KEY (`user_id`)
+        REFERENCES `user` (`user_id`),
+    CONSTRAINT `friend_ibfk_2`
+        FOREIGN KEY (`friend_id`)
+        REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

@@ -46,7 +46,11 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildEventQuery rightJoinSport($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Sport relation
  * @method     ChildEventQuery innerJoinSport($relationAlias = null) Adds a INNER JOIN clause to the query using the Sport relation
  *
- * @method     \UserQuery|\SportQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     ChildEventQuery leftJoinComments($relationAlias = null) Adds a LEFT JOIN clause to the query using the Comments relation
+ * @method     ChildEventQuery rightJoinComments($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Comments relation
+ * @method     ChildEventQuery innerJoinComments($relationAlias = null) Adds a INNER JOIN clause to the query using the Comments relation
+ *
+ * @method     \UserQuery|\SportQuery|\CommentsQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildEvent findOne(ConnectionInterface $con = null) Return the first ChildEvent matching the query
  * @method     ChildEvent findOneOrCreate(ConnectionInterface $con = null) Return the first ChildEvent matching the query, or a new ChildEvent object populated from the query conditions when no match is found
@@ -649,6 +653,79 @@ abstract class EventQuery extends ModelCriteria
         return $this
             ->joinSport($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Sport', '\SportQuery');
+    }
+
+    /**
+     * Filter the query by a related \Comments object
+     *
+     * @param \Comments|ObjectCollection $comments the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildEventQuery The current query, for fluid interface
+     */
+    public function filterByComments($comments, $comparison = null)
+    {
+        if ($comments instanceof \Comments) {
+            return $this
+                ->addUsingAlias(EventTableMap::COL_ID, $comments->getEventId(), $comparison);
+        } elseif ($comments instanceof ObjectCollection) {
+            return $this
+                ->useCommentsQuery()
+                ->filterByPrimaryKeys($comments->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByComments() only accepts arguments of type \Comments or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Comments relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildEventQuery The current query, for fluid interface
+     */
+    public function joinComments($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Comments');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Comments');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Comments relation Comments object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \CommentsQuery A secondary query class using the current class as primary query
+     */
+    public function useCommentsQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinComments($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Comments', '\CommentsQuery');
     }
 
     /**

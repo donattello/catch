@@ -2,8 +2,12 @@
 
 namespace Base;
 
+use \Comments as ChildComments;
+use \CommentsQuery as ChildCommentsQuery;
 use \Event as ChildEvent;
 use \EventQuery as ChildEventQuery;
+use \Friend as ChildFriend;
+use \FriendQuery as ChildFriendQuery;
 use \User as ChildUser;
 use \UserQuery as ChildUserQuery;
 use \Exception;
@@ -106,10 +110,28 @@ abstract class User implements ActiveRecordInterface
     protected $user_gender;
 
     /**
+     * @var        ObjectCollection|ChildComments[] Collection to store aggregation of ChildComments objects.
+     */
+    protected $collCommentss;
+    protected $collCommentssPartial;
+
+    /**
      * @var        ObjectCollection|ChildEvent[] Collection to store aggregation of ChildEvent objects.
      */
     protected $collEvents;
     protected $collEventsPartial;
+
+    /**
+     * @var        ObjectCollection|ChildFriend[] Collection to store aggregation of ChildFriend objects.
+     */
+    protected $collFriendsRelatedByUserId;
+    protected $collFriendsRelatedByUserIdPartial;
+
+    /**
+     * @var        ObjectCollection|ChildFriend[] Collection to store aggregation of ChildFriend objects.
+     */
+    protected $collFriendsRelatedByFriendId;
+    protected $collFriendsRelatedByFriendIdPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -121,9 +143,27 @@ abstract class User implements ActiveRecordInterface
 
     /**
      * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildComments[]
+     */
+    protected $commentssScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
      * @var ObjectCollection|ChildEvent[]
      */
     protected $eventsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildFriend[]
+     */
+    protected $friendsRelatedByUserIdScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildFriend[]
+     */
+    protected $friendsRelatedByFriendIdScheduledForDeletion = null;
 
     /**
      * Initializes internal state of Base\User object.
@@ -677,7 +717,13 @@ abstract class User implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->collCommentss = null;
+
             $this->collEvents = null;
+
+            $this->collFriendsRelatedByUserId = null;
+
+            $this->collFriendsRelatedByFriendId = null;
 
         } // if (deep)
     }
@@ -789,6 +835,24 @@ abstract class User implements ActiveRecordInterface
                 $this->resetModified();
             }
 
+            if ($this->commentssScheduledForDeletion !== null) {
+                if (!$this->commentssScheduledForDeletion->isEmpty()) {
+                    foreach ($this->commentssScheduledForDeletion as $comments) {
+                        // need to save related object because we set the relation to null
+                        $comments->save($con);
+                    }
+                    $this->commentssScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collCommentss !== null) {
+                foreach ($this->collCommentss as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             if ($this->eventsScheduledForDeletion !== null) {
                 if (!$this->eventsScheduledForDeletion->isEmpty()) {
                     \EventQuery::create()
@@ -800,6 +864,40 @@ abstract class User implements ActiveRecordInterface
 
             if ($this->collEvents !== null) {
                 foreach ($this->collEvents as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->friendsRelatedByUserIdScheduledForDeletion !== null) {
+                if (!$this->friendsRelatedByUserIdScheduledForDeletion->isEmpty()) {
+                    \FriendQuery::create()
+                        ->filterByPrimaryKeys($this->friendsRelatedByUserIdScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->friendsRelatedByUserIdScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collFriendsRelatedByUserId !== null) {
+                foreach ($this->collFriendsRelatedByUserId as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->friendsRelatedByFriendIdScheduledForDeletion !== null) {
+                if (!$this->friendsRelatedByFriendIdScheduledForDeletion->isEmpty()) {
+                    \FriendQuery::create()
+                        ->filterByPrimaryKeys($this->friendsRelatedByFriendIdScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->friendsRelatedByFriendIdScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collFriendsRelatedByFriendId !== null) {
+                foreach ($this->collFriendsRelatedByFriendId as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1012,6 +1110,21 @@ abstract class User implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->collCommentss) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'commentss';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'commentss';
+                        break;
+                    default:
+                        $key = 'Commentss';
+                }
+
+                $result[$key] = $this->collCommentss->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collEvents) {
 
                 switch ($keyType) {
@@ -1026,6 +1139,36 @@ abstract class User implements ActiveRecordInterface
                 }
 
                 $result[$key] = $this->collEvents->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collFriendsRelatedByUserId) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'friends';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'friends';
+                        break;
+                    default:
+                        $key = 'Friends';
+                }
+
+                $result[$key] = $this->collFriendsRelatedByUserId->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collFriendsRelatedByFriendId) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'friends';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'friends';
+                        break;
+                    default:
+                        $key = 'Friends';
+                }
+
+                $result[$key] = $this->collFriendsRelatedByFriendId->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1289,9 +1432,27 @@ abstract class User implements ActiveRecordInterface
             // the getter/setter methods for fkey referrer objects.
             $copyObj->setNew(false);
 
+            foreach ($this->getCommentss() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addComments($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getEvents() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addEvent($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getFriendsRelatedByUserId() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addFriendRelatedByUserId($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getFriendsRelatedByFriendId() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addFriendRelatedByFriendId($relObj->copy($deepCopy));
                 }
             }
 
@@ -1336,9 +1497,261 @@ abstract class User implements ActiveRecordInterface
      */
     public function initRelation($relationName)
     {
+        if ('Comments' == $relationName) {
+            return $this->initCommentss();
+        }
         if ('Event' == $relationName) {
             return $this->initEvents();
         }
+        if ('FriendRelatedByUserId' == $relationName) {
+            return $this->initFriendsRelatedByUserId();
+        }
+        if ('FriendRelatedByFriendId' == $relationName) {
+            return $this->initFriendsRelatedByFriendId();
+        }
+    }
+
+    /**
+     * Clears out the collCommentss collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addCommentss()
+     */
+    public function clearCommentss()
+    {
+        $this->collCommentss = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collCommentss collection loaded partially.
+     */
+    public function resetPartialCommentss($v = true)
+    {
+        $this->collCommentssPartial = $v;
+    }
+
+    /**
+     * Initializes the collCommentss collection.
+     *
+     * By default this just sets the collCommentss collection to an empty array (like clearcollCommentss());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initCommentss($overrideExisting = true)
+    {
+        if (null !== $this->collCommentss && !$overrideExisting) {
+            return;
+        }
+        $this->collCommentss = new ObjectCollection();
+        $this->collCommentss->setModel('\Comments');
+    }
+
+    /**
+     * Gets an array of ChildComments objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildComments[] List of ChildComments objects
+     * @throws PropelException
+     */
+    public function getCommentss(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collCommentssPartial && !$this->isNew();
+        if (null === $this->collCommentss || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collCommentss) {
+                // return empty collection
+                $this->initCommentss();
+            } else {
+                $collCommentss = ChildCommentsQuery::create(null, $criteria)
+                    ->filterByUser($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collCommentssPartial && count($collCommentss)) {
+                        $this->initCommentss(false);
+
+                        foreach ($collCommentss as $obj) {
+                            if (false == $this->collCommentss->contains($obj)) {
+                                $this->collCommentss->append($obj);
+                            }
+                        }
+
+                        $this->collCommentssPartial = true;
+                    }
+
+                    return $collCommentss;
+                }
+
+                if ($partial && $this->collCommentss) {
+                    foreach ($this->collCommentss as $obj) {
+                        if ($obj->isNew()) {
+                            $collCommentss[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collCommentss = $collCommentss;
+                $this->collCommentssPartial = false;
+            }
+        }
+
+        return $this->collCommentss;
+    }
+
+    /**
+     * Sets a collection of ChildComments objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $commentss A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildUser The current object (for fluent API support)
+     */
+    public function setCommentss(Collection $commentss, ConnectionInterface $con = null)
+    {
+        /** @var ChildComments[] $commentssToDelete */
+        $commentssToDelete = $this->getCommentss(new Criteria(), $con)->diff($commentss);
+
+
+        $this->commentssScheduledForDeletion = $commentssToDelete;
+
+        foreach ($commentssToDelete as $commentsRemoved) {
+            $commentsRemoved->setUser(null);
+        }
+
+        $this->collCommentss = null;
+        foreach ($commentss as $comments) {
+            $this->addComments($comments);
+        }
+
+        $this->collCommentss = $commentss;
+        $this->collCommentssPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Comments objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Comments objects.
+     * @throws PropelException
+     */
+    public function countCommentss(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collCommentssPartial && !$this->isNew();
+        if (null === $this->collCommentss || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collCommentss) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getCommentss());
+            }
+
+            $query = ChildCommentsQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByUser($this)
+                ->count($con);
+        }
+
+        return count($this->collCommentss);
+    }
+
+    /**
+     * Method called to associate a ChildComments object to this object
+     * through the ChildComments foreign key attribute.
+     *
+     * @param  ChildComments $l ChildComments
+     * @return $this|\User The current object (for fluent API support)
+     */
+    public function addComments(ChildComments $l)
+    {
+        if ($this->collCommentss === null) {
+            $this->initCommentss();
+            $this->collCommentssPartial = true;
+        }
+
+        if (!$this->collCommentss->contains($l)) {
+            $this->doAddComments($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildComments $comments The ChildComments object to add.
+     */
+    protected function doAddComments(ChildComments $comments)
+    {
+        $this->collCommentss[]= $comments;
+        $comments->setUser($this);
+    }
+
+    /**
+     * @param  ChildComments $comments The ChildComments object to remove.
+     * @return $this|ChildUser The current object (for fluent API support)
+     */
+    public function removeComments(ChildComments $comments)
+    {
+        if ($this->getCommentss()->contains($comments)) {
+            $pos = $this->collCommentss->search($comments);
+            $this->collCommentss->remove($pos);
+            if (null === $this->commentssScheduledForDeletion) {
+                $this->commentssScheduledForDeletion = clone $this->collCommentss;
+                $this->commentssScheduledForDeletion->clear();
+            }
+            $this->commentssScheduledForDeletion[]= $comments;
+            $comments->setUser(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this User is new, it will return
+     * an empty collection; or if this User has previously
+     * been saved, it will retrieve related Commentss from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in User.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildComments[] List of ChildComments objects
+     */
+    public function getCommentssJoinEvent(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildCommentsQuery::create(null, $criteria);
+        $query->joinWith('Event', $joinBehavior);
+
+        return $this->getCommentss($query, $con);
     }
 
     /**
@@ -1585,6 +1998,442 @@ abstract class User implements ActiveRecordInterface
     }
 
     /**
+     * Clears out the collFriendsRelatedByUserId collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addFriendsRelatedByUserId()
+     */
+    public function clearFriendsRelatedByUserId()
+    {
+        $this->collFriendsRelatedByUserId = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collFriendsRelatedByUserId collection loaded partially.
+     */
+    public function resetPartialFriendsRelatedByUserId($v = true)
+    {
+        $this->collFriendsRelatedByUserIdPartial = $v;
+    }
+
+    /**
+     * Initializes the collFriendsRelatedByUserId collection.
+     *
+     * By default this just sets the collFriendsRelatedByUserId collection to an empty array (like clearcollFriendsRelatedByUserId());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initFriendsRelatedByUserId($overrideExisting = true)
+    {
+        if (null !== $this->collFriendsRelatedByUserId && !$overrideExisting) {
+            return;
+        }
+        $this->collFriendsRelatedByUserId = new ObjectCollection();
+        $this->collFriendsRelatedByUserId->setModel('\Friend');
+    }
+
+    /**
+     * Gets an array of ChildFriend objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildFriend[] List of ChildFriend objects
+     * @throws PropelException
+     */
+    public function getFriendsRelatedByUserId(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collFriendsRelatedByUserIdPartial && !$this->isNew();
+        if (null === $this->collFriendsRelatedByUserId || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collFriendsRelatedByUserId) {
+                // return empty collection
+                $this->initFriendsRelatedByUserId();
+            } else {
+                $collFriendsRelatedByUserId = ChildFriendQuery::create(null, $criteria)
+                    ->filterByUserRelatedByUserId($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collFriendsRelatedByUserIdPartial && count($collFriendsRelatedByUserId)) {
+                        $this->initFriendsRelatedByUserId(false);
+
+                        foreach ($collFriendsRelatedByUserId as $obj) {
+                            if (false == $this->collFriendsRelatedByUserId->contains($obj)) {
+                                $this->collFriendsRelatedByUserId->append($obj);
+                            }
+                        }
+
+                        $this->collFriendsRelatedByUserIdPartial = true;
+                    }
+
+                    return $collFriendsRelatedByUserId;
+                }
+
+                if ($partial && $this->collFriendsRelatedByUserId) {
+                    foreach ($this->collFriendsRelatedByUserId as $obj) {
+                        if ($obj->isNew()) {
+                            $collFriendsRelatedByUserId[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collFriendsRelatedByUserId = $collFriendsRelatedByUserId;
+                $this->collFriendsRelatedByUserIdPartial = false;
+            }
+        }
+
+        return $this->collFriendsRelatedByUserId;
+    }
+
+    /**
+     * Sets a collection of ChildFriend objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $friendsRelatedByUserId A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildUser The current object (for fluent API support)
+     */
+    public function setFriendsRelatedByUserId(Collection $friendsRelatedByUserId, ConnectionInterface $con = null)
+    {
+        /** @var ChildFriend[] $friendsRelatedByUserIdToDelete */
+        $friendsRelatedByUserIdToDelete = $this->getFriendsRelatedByUserId(new Criteria(), $con)->diff($friendsRelatedByUserId);
+
+
+        $this->friendsRelatedByUserIdScheduledForDeletion = $friendsRelatedByUserIdToDelete;
+
+        foreach ($friendsRelatedByUserIdToDelete as $friendRelatedByUserIdRemoved) {
+            $friendRelatedByUserIdRemoved->setUserRelatedByUserId(null);
+        }
+
+        $this->collFriendsRelatedByUserId = null;
+        foreach ($friendsRelatedByUserId as $friendRelatedByUserId) {
+            $this->addFriendRelatedByUserId($friendRelatedByUserId);
+        }
+
+        $this->collFriendsRelatedByUserId = $friendsRelatedByUserId;
+        $this->collFriendsRelatedByUserIdPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Friend objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Friend objects.
+     * @throws PropelException
+     */
+    public function countFriendsRelatedByUserId(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collFriendsRelatedByUserIdPartial && !$this->isNew();
+        if (null === $this->collFriendsRelatedByUserId || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collFriendsRelatedByUserId) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getFriendsRelatedByUserId());
+            }
+
+            $query = ChildFriendQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByUserRelatedByUserId($this)
+                ->count($con);
+        }
+
+        return count($this->collFriendsRelatedByUserId);
+    }
+
+    /**
+     * Method called to associate a ChildFriend object to this object
+     * through the ChildFriend foreign key attribute.
+     *
+     * @param  ChildFriend $l ChildFriend
+     * @return $this|\User The current object (for fluent API support)
+     */
+    public function addFriendRelatedByUserId(ChildFriend $l)
+    {
+        if ($this->collFriendsRelatedByUserId === null) {
+            $this->initFriendsRelatedByUserId();
+            $this->collFriendsRelatedByUserIdPartial = true;
+        }
+
+        if (!$this->collFriendsRelatedByUserId->contains($l)) {
+            $this->doAddFriendRelatedByUserId($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildFriend $friendRelatedByUserId The ChildFriend object to add.
+     */
+    protected function doAddFriendRelatedByUserId(ChildFriend $friendRelatedByUserId)
+    {
+        $this->collFriendsRelatedByUserId[]= $friendRelatedByUserId;
+        $friendRelatedByUserId->setUserRelatedByUserId($this);
+    }
+
+    /**
+     * @param  ChildFriend $friendRelatedByUserId The ChildFriend object to remove.
+     * @return $this|ChildUser The current object (for fluent API support)
+     */
+    public function removeFriendRelatedByUserId(ChildFriend $friendRelatedByUserId)
+    {
+        if ($this->getFriendsRelatedByUserId()->contains($friendRelatedByUserId)) {
+            $pos = $this->collFriendsRelatedByUserId->search($friendRelatedByUserId);
+            $this->collFriendsRelatedByUserId->remove($pos);
+            if (null === $this->friendsRelatedByUserIdScheduledForDeletion) {
+                $this->friendsRelatedByUserIdScheduledForDeletion = clone $this->collFriendsRelatedByUserId;
+                $this->friendsRelatedByUserIdScheduledForDeletion->clear();
+            }
+            $this->friendsRelatedByUserIdScheduledForDeletion[]= clone $friendRelatedByUserId;
+            $friendRelatedByUserId->setUserRelatedByUserId(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clears out the collFriendsRelatedByFriendId collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addFriendsRelatedByFriendId()
+     */
+    public function clearFriendsRelatedByFriendId()
+    {
+        $this->collFriendsRelatedByFriendId = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collFriendsRelatedByFriendId collection loaded partially.
+     */
+    public function resetPartialFriendsRelatedByFriendId($v = true)
+    {
+        $this->collFriendsRelatedByFriendIdPartial = $v;
+    }
+
+    /**
+     * Initializes the collFriendsRelatedByFriendId collection.
+     *
+     * By default this just sets the collFriendsRelatedByFriendId collection to an empty array (like clearcollFriendsRelatedByFriendId());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initFriendsRelatedByFriendId($overrideExisting = true)
+    {
+        if (null !== $this->collFriendsRelatedByFriendId && !$overrideExisting) {
+            return;
+        }
+        $this->collFriendsRelatedByFriendId = new ObjectCollection();
+        $this->collFriendsRelatedByFriendId->setModel('\Friend');
+    }
+
+    /**
+     * Gets an array of ChildFriend objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildUser is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildFriend[] List of ChildFriend objects
+     * @throws PropelException
+     */
+    public function getFriendsRelatedByFriendId(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collFriendsRelatedByFriendIdPartial && !$this->isNew();
+        if (null === $this->collFriendsRelatedByFriendId || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collFriendsRelatedByFriendId) {
+                // return empty collection
+                $this->initFriendsRelatedByFriendId();
+            } else {
+                $collFriendsRelatedByFriendId = ChildFriendQuery::create(null, $criteria)
+                    ->filterByUserRelatedByFriendId($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collFriendsRelatedByFriendIdPartial && count($collFriendsRelatedByFriendId)) {
+                        $this->initFriendsRelatedByFriendId(false);
+
+                        foreach ($collFriendsRelatedByFriendId as $obj) {
+                            if (false == $this->collFriendsRelatedByFriendId->contains($obj)) {
+                                $this->collFriendsRelatedByFriendId->append($obj);
+                            }
+                        }
+
+                        $this->collFriendsRelatedByFriendIdPartial = true;
+                    }
+
+                    return $collFriendsRelatedByFriendId;
+                }
+
+                if ($partial && $this->collFriendsRelatedByFriendId) {
+                    foreach ($this->collFriendsRelatedByFriendId as $obj) {
+                        if ($obj->isNew()) {
+                            $collFriendsRelatedByFriendId[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collFriendsRelatedByFriendId = $collFriendsRelatedByFriendId;
+                $this->collFriendsRelatedByFriendIdPartial = false;
+            }
+        }
+
+        return $this->collFriendsRelatedByFriendId;
+    }
+
+    /**
+     * Sets a collection of ChildFriend objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $friendsRelatedByFriendId A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildUser The current object (for fluent API support)
+     */
+    public function setFriendsRelatedByFriendId(Collection $friendsRelatedByFriendId, ConnectionInterface $con = null)
+    {
+        /** @var ChildFriend[] $friendsRelatedByFriendIdToDelete */
+        $friendsRelatedByFriendIdToDelete = $this->getFriendsRelatedByFriendId(new Criteria(), $con)->diff($friendsRelatedByFriendId);
+
+
+        $this->friendsRelatedByFriendIdScheduledForDeletion = $friendsRelatedByFriendIdToDelete;
+
+        foreach ($friendsRelatedByFriendIdToDelete as $friendRelatedByFriendIdRemoved) {
+            $friendRelatedByFriendIdRemoved->setUserRelatedByFriendId(null);
+        }
+
+        $this->collFriendsRelatedByFriendId = null;
+        foreach ($friendsRelatedByFriendId as $friendRelatedByFriendId) {
+            $this->addFriendRelatedByFriendId($friendRelatedByFriendId);
+        }
+
+        $this->collFriendsRelatedByFriendId = $friendsRelatedByFriendId;
+        $this->collFriendsRelatedByFriendIdPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Friend objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Friend objects.
+     * @throws PropelException
+     */
+    public function countFriendsRelatedByFriendId(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collFriendsRelatedByFriendIdPartial && !$this->isNew();
+        if (null === $this->collFriendsRelatedByFriendId || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collFriendsRelatedByFriendId) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getFriendsRelatedByFriendId());
+            }
+
+            $query = ChildFriendQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByUserRelatedByFriendId($this)
+                ->count($con);
+        }
+
+        return count($this->collFriendsRelatedByFriendId);
+    }
+
+    /**
+     * Method called to associate a ChildFriend object to this object
+     * through the ChildFriend foreign key attribute.
+     *
+     * @param  ChildFriend $l ChildFriend
+     * @return $this|\User The current object (for fluent API support)
+     */
+    public function addFriendRelatedByFriendId(ChildFriend $l)
+    {
+        if ($this->collFriendsRelatedByFriendId === null) {
+            $this->initFriendsRelatedByFriendId();
+            $this->collFriendsRelatedByFriendIdPartial = true;
+        }
+
+        if (!$this->collFriendsRelatedByFriendId->contains($l)) {
+            $this->doAddFriendRelatedByFriendId($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildFriend $friendRelatedByFriendId The ChildFriend object to add.
+     */
+    protected function doAddFriendRelatedByFriendId(ChildFriend $friendRelatedByFriendId)
+    {
+        $this->collFriendsRelatedByFriendId[]= $friendRelatedByFriendId;
+        $friendRelatedByFriendId->setUserRelatedByFriendId($this);
+    }
+
+    /**
+     * @param  ChildFriend $friendRelatedByFriendId The ChildFriend object to remove.
+     * @return $this|ChildUser The current object (for fluent API support)
+     */
+    public function removeFriendRelatedByFriendId(ChildFriend $friendRelatedByFriendId)
+    {
+        if ($this->getFriendsRelatedByFriendId()->contains($friendRelatedByFriendId)) {
+            $pos = $this->collFriendsRelatedByFriendId->search($friendRelatedByFriendId);
+            $this->collFriendsRelatedByFriendId->remove($pos);
+            if (null === $this->friendsRelatedByFriendIdScheduledForDeletion) {
+                $this->friendsRelatedByFriendIdScheduledForDeletion = clone $this->collFriendsRelatedByFriendId;
+                $this->friendsRelatedByFriendIdScheduledForDeletion->clear();
+            }
+            $this->friendsRelatedByFriendIdScheduledForDeletion[]= clone $friendRelatedByFriendId;
+            $friendRelatedByFriendId->setUserRelatedByFriendId(null);
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
@@ -1616,14 +2465,32 @@ abstract class User implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collCommentss) {
+                foreach ($this->collCommentss as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collEvents) {
                 foreach ($this->collEvents as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collFriendsRelatedByUserId) {
+                foreach ($this->collFriendsRelatedByUserId as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collFriendsRelatedByFriendId) {
+                foreach ($this->collFriendsRelatedByFriendId as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
+        $this->collCommentss = null;
         $this->collEvents = null;
+        $this->collFriendsRelatedByUserId = null;
+        $this->collFriendsRelatedByFriendId = null;
     }
 
     /**

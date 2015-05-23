@@ -178,6 +178,13 @@ class EventTableMap extends TableMap
     1 => ':id',
   ),
 ), null, null, null, false);
+        $this->addRelation('Comments', '\\Comments', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':event_id',
+    1 => ':id',
+  ),
+), null, null, 'Commentss', false);
     } // buildRelations()
 
     /**
