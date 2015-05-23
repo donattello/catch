@@ -48,6 +48,10 @@ public static function getFriends() {
         <p><?= $PrintUserProfile->getBio(); ?></p>
 	</div>
 
+    <input type="submit" value="Add Friend" />
+
+    
+
 
 
 <?php include ("views/_templates/footer.php"); ?>
