@@ -1,54 +1,71 @@
  <?php include "views/_templates/header.php"; ?>
 
-<div class="name"><h1><?= $_SESSION["user_name"] ?></h1></div>
-   
-<form action="processing/add-profile.php" method="post" enctype="multipart/form-data">
-    
-    <div class="form-group">
-        <input type="file" name="avatar" id="avatar" />
-    </div>
+<section class="container">
+    <div class="row">
         
-    <div class="form-group">
-        <div class="description col-xs-12">
-            <label for="inputAge"><h3>Enter your age</h3></label>
-        </div>
-        <div class="col-xs-12">
-            <input type="text" name="age" class="text-area" required>
-        </div>
-    </div><!--form-group Age-->
-        
-    <div class="form-group">
-        <div class="description col-xs-12">
-            <label for="selectGender"><h3>Gender</h3></label>
-        </div>
-        <div class="col-xs-12">
-            <select name="gender" class="selects">
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-            </select>
-        </div>
-    </div><!--form-group Gender-->
-    
-    <div class="form-group">
-        <div class="description col-xs-12">
-            <label for="selectActivity"><h3>Select Category</h3></label>
-        </div>
-        <div class="selects col-xs-12">
-            <?php include ("views/_templates/get-event-types.php"); ?>
-        </div>
-    </div><!--form-group Activity-->
+        <section class="testAvatar col-xs-4">
+            <img src="icons/AvatarTest.png" height="100px" width="100px">
+        </section>
 
-    <div class="form-group">
-        <div class="description col-xs-12">
-            <label for="about"><h3>About <?= $_SESSION["user_name"] ?></h3></label>
+        <div class="name col-xs-8">
+            <h1><?= $_SESSION["user_name"] ?></h1>
         </div>
-        <div class="text col-xs-12">
-            <textarea rows="8" cols="40" name="user_bio" class="text-area" required></textarea>
-        </div>
-    </div><!--form-group About-->
+
+
+
+        <form action="processing/add-profile.php" method="post" enctype="multipart/form-data">
+
+        <!--
+            <div class="form-group">
+                <input type="file" name="avatar" id="avatar" />
+            </div>
+        -->
+
+            <div class="form-group">
+                <div class="description col-xs-12">
+                    <label for="inputAge"><h3>Enter your age</h3></label>
+                </div>
+                <div class="col-xs-12">
+                    <input type="text" name="age" class="text-area" required>
+                </div>
+            </div><!--form-group Age-->
+
+            <div class="form-group">
+                <div class="description col-xs-12">
+                    <label for="selectGender"><h3>Gender</h3></label>
+                </div>
+                <div class="col-xs-12">
+                    <select name="gender" class="selects">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+            </div><!--form-group Gender-->
+
+            <div class="form-group">
+                <div class="description col-xs-12">
+                    <label for="selectActivity"><h3>Select Category</h3></label>
+                </div>
+                <div class="col-xs-12">
+                    <?php include ("views/_templates/get-event-types.php"); ?>
+                </div>
+            </div><!--form-group Activity-->
+
+            <div class="form-group">
+                <div class="description col-xs-12">
+                    <label for="about"><h3>About <?= $_SESSION["user_name"] ?></h3></label>
+                </div>
+                <div class="text col-xs-12">
+                    <textarea rows="8" cols="40" name="user_bio" class="text-area" required></textarea>
+                </div>
+            </div><!--form-group About-->
+
+            <button type="submit" name="create-profile" class="btn btn-primary">Create Profile</button>
+        </form>
     
-    <button type="submit" name="create-profile" class="btn btn-primary">Create Profile</button>
-</form>
+    </div><!--end of row-->
+    
+</section><!--end of container-->
 
 
 

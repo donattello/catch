@@ -1,5 +1,5 @@
 <?php
-session_start();
+//session_start();
 $autoloader = require '../vendor/autoload.php';
 $autoloader->add('../generated-classes/', '');
 require_once ('../generated-conf/config.php');

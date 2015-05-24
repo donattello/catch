@@ -27,7 +27,8 @@ if(!empty($submitted)){
     }
     
     $editUser = UserQuery::create()->findPK($_SESSION["user_id"]);
-    //var_dump($editUser->toArray());
+    //
+    var_dump($editUser->toArray());
     
     echo "<br>";
     
