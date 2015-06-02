@@ -14,20 +14,22 @@
 
             </div><!--containerHome-->
 
-<!--Feed template-->
-
-
-
-    </div><!--end of row-->
-</section><!--end of container-->
-
+   
+<div class="allEvents col-xs-12">
+    <h3>My Events</h3>
+</div>
 
 <?php $user = UserQuery::create()->findPK($_SESSION["user_id"]); ?>
 
 <?php foreach($user->getEvents() as $event) { ?>
-	<div>
-	    <p><?= $event->getSport()->getSport() . "On: " . $event->getEventDate('d-m-y H:i') . $event->getEventPlace() . $event->getEventNumberPeople(); ?></p>
+
+<div class="event-box">
+		<img src="images/<?= $event->getUser()->getUserName() ?>.jpg">
+		<h3><a href="event.php?id=<?= $event->getId(); ?>"><?= $event->getSport()->getSport(); ?></a></h3>
+		<h5>Posted by: <a href="profile.php?id=<?= $event->getUser()->getUserId() ?>"><?= $event->getUser()->getUserName() ?></a></h5>
+		<p><?= "at " . $event->getEventPlace() . ", " . "on: " . $event->getEventDate('d-m-y H:i') . ", " . $event->getEventNumberPeople() . " more needed"?></p>
 	</div>
+	
 <?php } ?>
 
 
@@ -39,20 +41,22 @@
         ->find();
 ?>
 
-
-All Events
+<div class="allEvents col-xs-12">
+    <h3>All Events</h3>
+</div>
 
 <?php foreach($events as $event) { ?>
 	<div class="event-box">
-		<img src="images/<?= $event->getUser()->getUserName() ?>.jpg">
+		<img src="images/<?= $event->getUser()->getUserName(); ?>.jpg">
 		<h3><a href="event.php?id=<?= $event->getId(); ?>"><?= $event->getSport()->getSport(); ?></a></h3>
 		<h5>Posted by: <a href="profile.php?id=<?= $event->getUser()->getUserId() ?>"><?= $event->getUser()->getUserName() ?></a></h5>
-		<p><?= $event->getEventPlace() ?></p>
-		<p><?= $event->getEventNumberPeople() ?></p>
-		<p>On: <?= $event->getEventDate('d-m-y H:i'); ?></p>
+		<p><?= "at " . $event->getEventPlace() . ", " . "on: " . $event->getEventDate('d-m-y H:i') . ", " . $event->getEventNumberPeople() . " more needed"?></p>
 	</div>
 <?php } ?>
 
+
+             </div><!--end of row-->
+</section><!--end of container-->
 
 
 <?php include ("views/_templates/footer.php"); ?>
