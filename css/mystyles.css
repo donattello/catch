@@ -1,6 +1,7 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300&subset=latin,cyrillic-ext);
 html, body {
-    height: 100%;
-    font-family: Helvetica;
+    height: 650px;
+    font-family: Roboto Condensed, Helvetica;
 }
 
 h3 {
@@ -172,6 +173,12 @@ h3 {
     height: 100%;
 }
 
+/*Add Event*/
+
+.AddEvent .description{
+    margin-top: 0;
+}
+
 /*menu*/
 
 #menu2 {
@@ -265,9 +272,9 @@ h3 {
     padding-top: 2%;
 }
 
-.formFields{
+/*.formFields{
     background-color: pink;
-}
+}*/
 
 .description h3 {
     color: black;
@@ -352,9 +359,21 @@ h3 {
     border-bottom-style: solid;
     border-bottom-color: #7abbc3;
     border-bottom-width: 1px;
+    padding-left: 2%;
+/*    background-color: pink;*/
 }
 
 .feedAvatar {
     padding-top: 2%;
+    padding-bottom: 2%;
     padding-left:  0;
+/*    background-color: blue;*/
 }
+
+.feedDescription p {
+/*    background-color: red;*/
+    
+}
+
+/* log in and registration*/
+

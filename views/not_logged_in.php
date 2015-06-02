@@ -17,9 +17,11 @@ if (isset($login)) {
 <!-- login form box -->
 <form method="post" action="index.php" name="loginform">
     <div class="form-group">
-        <label for="login_input_username">Username</label>
+        <div class="description col-xs-12">
+            <label for="login_input_username">Username</label>
+        </div>
         <div class="formFields col-sm-10">
-            <input id="login_input_username" class="login_input" type="text" name="user_name" required />
+            <input id="login_input_username" class="login_input text-area" type="text" name="user_name" required />
         </div>
     </div>
     <div class="form-group">

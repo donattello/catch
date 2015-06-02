@@ -51,6 +51,7 @@ require_once ('generated-conf/config.php'); ?>
 <section class="container viewProf">
     <div class="row">
         <section class="profileImg col-xs-12">
+            <button type="button" class="close glyphicon glyphicon-remove" data-dismiss="modal"></button>
         </section><!--end of profielImg-->
         
         <section class="chatIcon profile col-xs-12">
