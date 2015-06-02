@@ -1,8 +1,10 @@
- <?php include "views/_templates/header.php"; ?>
+<?php include "views/_templates/header.php"; ?>
+
+<?php $PrintUserProfile = UserQuery::create()->findPK($_SESSION["user_id"]); ?>
 
 <section class="container">
     <div class="row">
-        
+
         <section class="testAvatar col-xs-4">
             <img src="icons/AvatarTest.png" height="100px" width="100px">
         </section>
@@ -26,7 +28,7 @@
                     <label for="inputAge"><h3>Enter your age</h3></label>
                 </div>
                 <div class="col-xs-12">
-                    <input type="text" name="age" class="text-area" required>
+                    <input type="text" name="age" class="text-area" value="<?= $PrintUserProfile->getUserAge() ?>" required>
                 </div>
             </div><!--form-group Age-->
 
@@ -56,15 +58,15 @@
                     <label for="about"><h3>About <?= $_SESSION["user_name"] ?></h3></label>
                 </div>
                 <div class="text col-xs-12">
-                    <textarea rows="8" cols="40" name="user_bio" class="text-area" required></textarea>
+                    <textarea rows="8" cols="40" name="user_bio" class="text-area" required><?= $PrintUserProfile->getBio() ?></textarea>
                 </div>
             </div><!--form-group About-->
 
-            <button type="submit" name="create-profile" class="btn btn-primary">Create Profile</button>
+            <button type="submit" value="submitted" name="create-profile" class="btn btn-primary">Create Profile</button>
         </form>
-    
+
     </div><!--end of row-->
-    
+
 </section><!--end of container-->
 
 
@@ -79,16 +81,16 @@
     <div id="editProfile1">
         <h1>Members Area</h1>
         <p><b>User Info</b></p>
-        
+
         <table>
             <tr>
                 <td>Username:</td>
                 <td><?php //echo $results['user_login'];?></td>
             </tr>
         </table>
-        
+
         <p>This is the members only area. Only logged in users can view this page. Please <a href="login.php?action=logout">click here to logout</a> </p>
     </div>
 -->
-    
+
 <?php include ("views/_templates/footer.php"); ?>

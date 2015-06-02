@@ -9,6 +9,16 @@ h3 {
     color: #706e6e;
 }
 
+.event-box {
+	margin-bottom: 5px;
+	padding: 10px;
+	background: #dfdfdf;
+}
+
+.event-box img {
+	float: left;
+	margin-right: 10px;
+}
 
 
 /*navigation*/
@@ -30,7 +40,7 @@ h3 {
 .logo {
     margin-top: 1%;
     padding-left: 10%;
-    
+
 }
 
 .image-nav {
@@ -53,13 +63,13 @@ h3 {
 .containerHome {
     float: none;
     margin: 0 auto;
-    padding: 0; 
+    padding: 0;
     height: 100%;
 }
 
 
 .homeButton {
-    
+
     height: 48%;
     margin-top: 2%;
 }
@@ -147,14 +157,14 @@ h3 {
 
 .createEvent {
     height: 48%;
-    background-color: #16a085; 
+    background-color: #16a085;
 }
 
 .existingEvents {
     height: 48%;
     padding-left: 0;
     padding-right: 1%;
-    
+
 }
 
 #colourExistingEvents {
@@ -307,7 +317,7 @@ h3 {
 .selects {
     width: 100%;
     border-style: none;
-    color: #706e6e; 
+    color: #706e6e;
 }
 
 .text-area {
@@ -372,7 +382,7 @@ h3 {
 
 .feedDescription p {
 /*    background-color: red;*/
-    
+
 }
 
 /* log in and registration*/

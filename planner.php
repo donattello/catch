@@ -1,5 +1,5 @@
 <?php include ("views/_templates/header.php"); ?>
-    
+
     <section class="container-fluid" id="planner2">
         <div class="row homecontainer">
             <div class="containerHome col-xs-11">
@@ -11,21 +11,12 @@
                         </div>
                     </div>
                 </a><!--link creatEvent-->
-                
+
             </div><!--containerHome-->
 
 <!--Feed template-->
-        
-        <section class="feed col-xs-12">
-            <div class="feedAvatar col-xs-3">
-                <img src="icons/AvatarTest.png" height="80px" width="80px">
-            </div><!--end of feedAvatar-->
-            
-            <div class="feedDescription col-xs-9">
-                    <p>The event description goes here</p>
-            </div><!--end of feedDescription-->
-            
-        </section><!--end of feed-->
+
+
 
     </div><!--end of row-->
 </section><!--end of container-->
@@ -33,32 +24,31 @@
 
 <?php $user = UserQuery::create()->findPK($_SESSION["user_id"]); ?>
 
-                <?php foreach($user->getEvents() as $event) { ?>
-                    <div>
-                        <p><?= $event->getSport()->getSport() . "On: " . $event->getEventDate('d-m-y H:i') . $event->getEventPlace() . $event->getEventNumberPeople(); ?></p>     
-                    <?php } ?>
-                    </div>
+<?php foreach($user->getEvents() as $event) { ?>
+	<div>
+	    <p><?= $event->getSport()->getSport() . "On: " . $event->getEventDate('d-m-y H:i') . $event->getEventPlace() . $event->getEventNumberPeople(); ?></p>
+	</div>
+<?php } ?>
+
 
 
  <?php
-    $events = EventQuery::create()
-            ->limit(100)
-            ->orderByEventDate('desc')
-            ->find();
+ 	$events = EventQuery::create()
+        ->limit(100)
+        ->orderByEventDate('desc')
+        ->find();
 ?>
 
 
 All Events
-<?php
-	$events = EventQuery::create()
-		->limit(100)
-		->orderByEventDate('desc')
-		->find();
-?>
 
 <?php foreach($events as $event) { ?>
-	<div>
+	<div class="event-box">
+		<img src="images/<?= $event->getUser()->getUserName() ?>.jpg">
 		<h3><a href="event.php?id=<?= $event->getId(); ?>"><?= $event->getSport()->getSport(); ?></a></h3>
+		<h5>Posted by: <a href="profile.php?id=<?= $event->getUser()->getUserId() ?>"><?= $event->getUser()->getUserName() ?></a></h5>
+		<p><?= $event->getEventPlace() ?></p>
+		<p><?= $event->getEventNumberPeople() ?></p>
 		<p>On: <?= $event->getEventDate('d-m-y H:i'); ?></p>
 	</div>
 <?php } ?>
@@ -66,31 +56,3 @@ All Events
 
 
 <?php include ("views/_templates/footer.php"); ?>
-
-
-<!--
-<div>
-	Hey, <?//= $user->getUserName(); ?>. You are logged in.
-</div>
-
-<div>
-	Bio: <?//= $user->getBio(); ?>
-</div>
--->
-
-<!--
-<?php // $user = UserQuery::create()->findPK($_SESSION["user_id"]); ?>
-
-<div>
-Your Events
-</div>
-<?php // foreach($user->getEvents() as $event) { ?>
-	<div>
-		<h3><? // = $event->getSport()->getSport(); ?></h3>
-		<p>On: <? // = $event->getEventDate('d-m-y H:i'); ?></p>
-        <p><? // = $event->getEventPlace(); ?></p>
-        <p><? // = $event->getEventNumberPeople(); ?></p>
-
-	</div>
-<?php // } ?>
--->

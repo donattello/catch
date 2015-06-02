@@ -29,31 +29,31 @@ $login = new Login();
                 <div class="row">
                     <div class="nav-button col-xs-1">
                          <a href="menu.php">
-                            <img src="icons/menuButton.png" width="30px" height="21px">
+                            <img src="images/menuButton.png" width="30px" height="21px">
                         </a>
                     </div><!--nav-button-->
 
                     <a href="index.php">
                       <div class="logo nav-icon col-xs-3">
-                          <img src="icons/logo.png" width="70px" height="39px">
+                          <img src="images/logo.png" width="70px" height="39px">
                       </div>
                     </a>
 
                     <div class="icon nav-icon pull-right col-xs-7">
                         <a href="newMatches.php" class="col-xs-3">
-                            <img src="icons/tick.png" width="25px" height="25px" class="image-nav">
+                            <img src="images/tick.png" width="25px" height="25px" class="image-nav">
                         </a>
 
                         <a href="planner.php" class="col-xs-3">
-                            <img src="icons/calendar.png" width="25px" height="25px" class="image-nav">
+                            <img src="images/calendar.png" width="25px" height="25px" class="image-nav">
                         </a>
 
                         <a href="friends.php" class="col-xs-3">
-                            <img src="icons/smile.png" width="25px" height="25px"  class="image-nav">
+                            <img src="images/smile.png" width="25px" height="25px"  class="image-nav">
                         </a>
 
                         <a href="chat.php" class="col-xs-3">
-                            <img src="icons/chat.png" width="25px" height="25px" class="image-nav">
+                            <img src="images/chat.png" width="25px" height="25px" class="image-nav">
                         </a>
                     </div><!--icon-->
 
