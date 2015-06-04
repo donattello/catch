@@ -194,6 +194,10 @@ h3 {
     margin-bottom: 2%;
 }
 
+.allEvents h3 {
+    color: white;
+}
+
 .event-box {
     border-bottom-style: solid;
     border-bottom-color: #7abbc3;
@@ -206,6 +210,31 @@ h3 {
 	margin-right: 10px;
 }
 
+/*event-box*/
+
+.avatarEvent {
+    padding-top: 5%;
+}
+
+.eventDiscription {
+    text-align: center;
+/*
+    border-bottom-style: solid;
+    border-bottom-color: #7abbc3;
+    border-bottom-width: 1px;
+    padding-left: 2%;
+*/
+}
+
+.commentBox {
+/*    margin-top: 10%;*/
+    background-color: #2bc0d4;
+    padding-top: 1%;
+}
+
+.comment form-control{
+    border: none;
+}
 /*menu*/
 
 #menu2 {
@@ -400,5 +429,42 @@ h3 {
 
 }
 
-/* log in and registration*/
+/*chatWindow*/
+
+.container {
+    height: 100%;
+}
+
+.row {
+    height: 100%;
+}
+
+.chatWindow {
+    height: 100%;
+}
+
+.stage {
+    background-color: #ffffff;
+    height: 90%;;
+}
+
+.chatText {
+    background-color: #2bc0d4;
+}
+
+.chatTextWindow {
+    background-color: red;
+}
+
+.sendBtn {
+    background-color: black;
+}
+
+.sendBtn1 {
+    border: none;
+}
+
+.input-group {
+    background-color: pink;
+}
 

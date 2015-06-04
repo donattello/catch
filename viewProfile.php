@@ -53,7 +53,9 @@ require_once ('generated-conf/config.php'); ?>
 
         <div class="buttons profile">
             <section class="chatIcon col-xs-2">
-                <img src="images/IconWebChatNew1.png" height="30px" width="30px">
+                <a href="chatWindow.php">
+                    <img src="images/IconWebChatNew1.png" height="30px" width="30px">
+                </a>
             </section><!--end of chatIcon-->
             <section class="tick col-xs-2 col-xs-offset-6">
                 <img src="images/tick1.png" height="30px" width="30px">

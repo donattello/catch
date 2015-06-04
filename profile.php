@@ -12,10 +12,27 @@
 	        <section class="profileImg col-xs-12">
 	            <button type="button" class="close glyphicon glyphicon-remove" data-dismiss="modal"></button>
 	        </section><!--end of profielImg-->
+            
+            <div class="buttons profile">
+                <section class="chatIcon col-xs-2">
+                    <a href="chatWindow.php">
+                        <img src="images/IconWebChatNew1.png" height="30px" width="30px">
+                    </a>
+                </section><!--end of chatIcon-->
 
-	        <section class="chatIcon profile col-xs-12">
-	            <img src="icons/IconWebChatNew1.png" height="30px" width="30px" class="col-xs-2">
-	        </section><!--end of chatIcon-->
+    <!--
+                <section class="chatIcon profile col-xs-12">
+                    <img src="images/IconWebChatNew1.png" height="30px" width="30px" class="col-xs-2">
+                </section><!--end of chatIcon-->
+
+                <section class="tick col-xs-2 col-xs-offset-6">
+                    <img src="images/tick1.png" height="30px" width="30px">
+                </section><!--end of tick1-->
+                <section class="deleteButton col-xs-2">
+                    <img src="images/delete.png" height="30px" width="30px">
+                </section><!--end of deleteButton-->
+            </div>
+
 
 	        <section class="profileName profile col-xs-12">
 	            <div class="name col-xs-3">
