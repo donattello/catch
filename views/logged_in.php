@@ -12,7 +12,7 @@
             <a href="newMatches.php">
                 <div class="homeButton button1 col-xs-6">
                     <div id="colourHomeButton">
-                        <img src="icons/tick.png" width="40px" height="40px" class="image">
+                        <img src="images/tick.png" width="40px" height="40px" class="image">
                         <!--<div class="position">-->
                         <div id="newMatches">
                         <h3>NEW</h3>
@@ -26,7 +26,7 @@
             <a href="planner.php">
                 <div class="planner button1 col-xs-6">
                     <div id="colourPlanner">
-                        <img src="icons/calendar.png" width="40px" height="40px" class="image">
+                        <img src="images/calendar.png" width="40px" height="40px" class="image">
                         <div class="position">
                         <h3>PLANNER</h3>
                         </div>
@@ -37,7 +37,7 @@
             <a href="friends.php">
                 <div class="friends button1 col-xs-6">
                     <div id="colourFriends">
-                        <img src="icons/smile.png" width="40px" height="40px" class="image">
+                        <img src="images/smile.png" width="40px" height="40px" class="image">
                         <div class="position">
                         <h3>FRIENDS</h3>
                         </div>
@@ -48,7 +48,7 @@
             <a href="chat.php">
                 <div class="chat button1 col-xs-6">
                     <div id="colourChat">
-                        <img src="icons/chat.png" width="40px" height="40px" class="image">
+                        <img src="images/chat.png" width="40px" height="40px" class="image">
                         <div class="position">
                         <h3>CHAT</h3>
                         </div>

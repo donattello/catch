@@ -41,6 +41,39 @@ h3 {
     padding: 0 2% 0 0;
 }
 
+/*log in*/
+
+.logoLogIn {
+    padding-top: 10%;
+    padding-left: 0;
+    padding-bottom: 10%;
+}
+
+
+.text-area {
+    height: 50px;
+}
+
+.formFields .text-area {
+    margin-bottom: 5%;
+    border-radius: 5%;
+    border-style: solid;
+    border-color: #2bc0d4;
+/*    margin-top: 5%;*/
+}
+
+.btn {
+    background-color: #2bc0d4;
+    color: white;
+    font-size: 20px;
+}
+
+.link {
+    padding-top: 10%;
+    padding-left: 0;
+    font-size: 20px;
+}
+
 /*home*/
 #home{
     height: 100%;
@@ -140,42 +173,37 @@ h3 {
 
 /*Events*/
 
-#planner2 {
-    height: 100%;
+.containerEvent {
+    height: 300px;
+    padding-bottom: 8%; 
 }
-
 .createEvent {
-    height: 48%;
+    height: 100%;
     background-color: #16a085;
 }
 
-.existingEvents {
-    height: 48%;
-    padding-left: 0;
-    padding-right: 1%;
-
-}
-
-#colourExistingEvents {
-    background-color: #fbaf1b;
-    height: 100%;
-}
-
-.pastEvents {
-    height: 48%;
-    padding-right: 0;
-    padding-left: 1%;
-}
-
-#colourPastEvents {
-    background-color: #8e3d85;
-    height: 100%;
-}
 
 /*Add Event*/
 
 .AddEvent .description{
     margin-top: 0;
+}
+
+.allEvents{
+    background-color: #7abbc3;
+    margin-bottom: 2%;
+}
+
+.event-box {
+    border-bottom-style: solid;
+    border-bottom-color: #7abbc3;
+    border-bottom-width: 1px;
+    padding-left: 2%;
+}
+
+.event-box img {
+	float: left;
+	margin-right: 10px;
 }
 
 /*menu*/
@@ -201,33 +229,12 @@ h3 {
 }
 
 #signOutBtn {
-    position: absolute;
-    left: 10%;
-    top: 80%;
-    width: 70%;
-    height: 15%;
+    height: 100%;
     background-color: #2bc0d4;
-    font-family: Helvetica;
     font-size: 20px;
-    color: white;
+    color: #ffffff;
 }
 
-.allEvents{
-    background-color: #7abbc3;
-    margin-bottom: 2%;
-}
-
-.event-box {
-    border-bottom-style: solid;
-    border-bottom-color: #7abbc3;
-    border-bottom-width: 1px;
-    padding-left: 2%;
-}
-
-.event-box img {
-	float: left;
-	margin-right: 10px;
-}
 
 
 /*App Settings*/
@@ -270,15 +277,16 @@ h3 {
     margin-top: 3%;
 }*/
 
+.btnApp {
+    height: 100px;
+    margin-top: 10%;
+    margin-bottom: 20%;
+}
+
 #deleteBtn {
-    /*position: absolute;
-    left: 10%;
-    top: 80%;*/
-    margin: 0 auto;
-    width: 70%;
-    height: 15%;
+/*    margin: 0 auto;*/
+    height: 100%;
     background-color: #c0392b;
-    font-family: Helvetica;
     font-size: 20px;
     color: white;
 }
@@ -288,10 +296,6 @@ h3 {
 .testAvatar {
     padding-top: 2%;
 }
-
-/*.formFields{
-    background-color: pink;
-}*/
 
 .description h3 {
     color: black;
@@ -368,6 +372,10 @@ h3 {
 .chatIcon {
     margin-top: 1%;
 
+}
+
+.buttons {
+    padding-bottom: 20px;
 }
 
 /* chat_template */

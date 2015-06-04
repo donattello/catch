@@ -15,7 +15,7 @@
 		<h3><?= $user->getUserName() . " " . $user->getUserAge() . " " . $user->getUserGender() ; ?></h3>
 <!--        <p><? // = $user->getBio(); ?></p>-->
         <input type="submit" value="Add Friend" />
-
+        
 	</div>
 
 <?php } ?>

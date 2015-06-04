@@ -28,13 +28,15 @@
             </section><!--appSettings-->
             </a>
            
-        </div><!--row-->
-       
             <!-- because people were asking: "index.php?logout" is just my simplified form of "index.php?logout=true" -->
-            <a href="index.php?logout" id="signOutBtn">Sign Out</a>         
+        <div class="btnApp col-xs-8 col-xs-offset-2">    
+             <button type="submit" class="btn btn-block" name="signOut" id="signOutBtn"><a href="index.php?logout">Sign Out</a></button>
+        </div>
+          
        
-<!--            <button type="button" id="signOutBtn">Sign Out</button>-->
-    </section>
+
+    </div><!--row-->
+</section>
     
     
 <?php include ("views/_templates/footer.php"); ?>

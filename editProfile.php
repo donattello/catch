@@ -6,7 +6,7 @@
     <div class="row">
 
         <section class="testAvatar col-xs-4">
-            <img src="icons/AvatarTest.png" height="100px" width="100px">
+            <img src="images/AvatarTest.png" height="100px" width="100px">
         </section>
 
         <div class="name col-xs-8">

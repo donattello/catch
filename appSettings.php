@@ -74,9 +74,13 @@
                 </div><!--line-->
             </section><!--soundNotifications-->
             
-        </div><!--row-->       
-      
-            <button type="button" id="deleteBtn">Delete Account</button>
+              
+            <div class="btnApp col-xs-8 col-xs-offset-2">
+<!--                <button type="button" id="deleteBtn">Delete Account</button>-->
+                <button type="submit" class="btn btn-block" name="delete" id="deleteBtn">Delete</button>
+            </div>
+           
+            </div><!--row-->
     </section>
     
 <?php include ("views/_templates/footer.php"); ?>

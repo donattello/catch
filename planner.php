@@ -1,8 +1,8 @@
 <?php include ("views/_templates/header.php"); ?>
 
-    <section class="container-fluid" id="planner2">
+    <section class="container" id="planner2">
         <div class="row homecontainer">
-            <div class="containerHome col-xs-11">
+            <div class="containerEvent col-xs-12">
                 <a href="create_event.php">
                     <div class="createEvent button2">
                         <div class="position">
