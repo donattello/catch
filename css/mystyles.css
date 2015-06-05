@@ -230,11 +230,18 @@ h3 {
 /*    margin-top: 10%;*/
     background-color: #2bc0d4;
     padding-top: 1%;
+    padding-bottom: 1%;
 }
 
 .comment form-control{
     border: none;
 }
+
+.sendBtn1 {
+    padding-top: 0;
+    border: none;
+}
+
 /*menu*/
 
 #menu2 {
@@ -445,26 +452,6 @@ h3 {
 
 .stage {
     background-color: #ffffff;
-    height: 90%;;
-}
-
-.chatText {
-    background-color: #2bc0d4;
-}
-
-.chatTextWindow {
-    background-color: red;
-}
-
-.sendBtn {
-    background-color: black;
-}
-
-.sendBtn1 {
-    border: none;
-}
-
-.input-group {
-    background-color: pink;
+    height: 100%;
 }
 
