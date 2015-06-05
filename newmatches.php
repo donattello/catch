@@ -13,6 +13,7 @@
 	<div class="event-box">
 <!--        <img src="images/<? // = $user->getUser()->getUserName(); ?>.jpg">-->
 <!--        <h3><a href="profile.php?id=<? // = $user->getUser()->getUserId() ?>"><? // = $user->getUser()->getUserName() ?></a></h3>-->
+            
        
         
         

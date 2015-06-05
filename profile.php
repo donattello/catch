@@ -20,11 +20,6 @@
                     </a>
                 </section><!--end of chatIcon-->
 
-    <!--
-                <section class="chatIcon profile col-xs-12">
-                    <img src="images/IconWebChatNew1.png" height="30px" width="30px" class="col-xs-2">
-                </section><!--end of chatIcon-->
-
                 <section class="tick col-xs-2 col-xs-offset-6">
                     <img src="images/tick1.png" height="30px" width="30px">
                 </section><!--end of tick1-->

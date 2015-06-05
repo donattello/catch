@@ -7,6 +7,10 @@ require_once ('generated-conf/config.php'); ?>
 
 <?php
 
+//              Adding a user into the friend's list
+
+//                  My version
+
 //$userFriends = UserFriendsQuery::create()
 //            ->filterByUserId($_SESSION["user_id"])
 //            ->select('friend') //name of the table in the database
@@ -20,6 +24,9 @@ require_once ('generated-conf/config.php'); ?>
 //        ->find();
 //    return $userFriends->toArray();
 //}
+
+
+//                      Kyle's version
 
 //$userFollows = UserFollowsQuery::create()
 //			->filterByUserId($_SESSION["user_id"])

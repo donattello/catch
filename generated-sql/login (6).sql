@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 02, 2015 at 12:10 PM
+-- Generation Time: Jun 05, 2015 at 12:35 PM
 -- Server version: 5.6.24
 -- PHP Version: 5.5.20
 
@@ -119,22 +119,23 @@ CREATE TABLE IF NOT EXISTS `user` (
   `bio` text COLLATE utf8_unicode_ci,
   `user_age` int(2) DEFAULT NULL,
   `user_gender` varchar(6) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='user data';
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='user data';
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`user_id`, `user_name`, `user_password_hash`, `user_email`, `bio`, `user_age`, `user_gender`) VALUES
-(4, 'martin', '$2y$10$2fgnLPM..UHAY6hLLu6UJ.Wlb49UKlhKEAGHuf79ERnyZUOZ9MJw.', 'test@test.com', 'test bio', 25, 'female'),
+(4, 'martin', '$2y$10$2fgnLPM..UHAY6hLLu6UJ.Wlb49UKlhKEAGHuf79ERnyZUOZ9MJw.', 'test@test.com', 'The first value you see is “400” in both the h1 and the paragraph. I inserted this to make sure that the browser is showing these fonts at the weights that they were meant to be displayed at, and we saw earlier that the intended weight is 400.\r\n\r\nNext, I set the font size followed but the line height. Notice that I didn’t use any sort of units for the line-height, this is a neat trick that will apply a relative line-height that changes with the font-size.\r\n\r\nFinally, I insert the Google fonts and use my own backups because I don’t think you should ever use the default browser choices for “cursive,” which is what Google uses in its snippet.\r\n', 25, 'male'),
 (5, 'username', '$2y$10$MP/kO/xOLw8.XNtSlT4tde/8ZyOi/FiAG7lTAin99hgESjNNSo05K', 'kasd@asd.com', NULL, NULL, NULL),
-(6, 'kyle', '$2y$10$.RgCqqzrHD2g47./HwBszexKjh8pi4Dm7P4Kv6LpzSi7RcmxjlNuu', 'kylegoslan@me.com', 'test bio2', 26, 'male'),
+(6, 'kyle', '$2y$10$.RgCqqzrHD2g47./HwBszexKjh8pi4Dm7P4Kv6LpzSi7RcmxjlNuu', 'kylegoslan@me.com', 'test bio2 test bio2 test bio2 test bio2 test bio2 test bio2 test bio2 test bio2 test bio2 test bio2 test bio2 test bio2 test bio2 test bio2 test bio2 test bio2 test bio2 test bio2 test bio2 test bio2 test bio2 test bio2 test bio2 test bio2 test bio2 test bio2 test bio2  ', 29, 'male'),
 (7, 'Edward', '$2y$10$23RO7XqA2WsVz64SRX3Mc.EAYczfExorn5oC77RxuSXxRzcbmjI3i', 'edward@hotmail.co.uk', NULL, NULL, NULL),
 (8, 'john', '$2y$10$89Pt615R13zno/6rEIOPBO11qMZ60HqbNw5Cp4EFVVP2E7fpxJqJa', 'john@hotmail.co.uk', NULL, NULL, NULL),
 (9, 'tom', '$2y$10$.GrToyM8MlpiKsPpeakhfOf5Lwk11/3dvIJ4oNYqkkdE9oQEEhW1W', 'tom@test.com', NULL, NULL, NULL),
 (10, 'john123', '$2y$10$68EgXqX6kmMgEnbDllQfo.od8Ot8O6vOz9J8BSbRMK/udTfRkXqNe', 'john123@test.com', NULL, NULL, NULL),
 (17, 'dan123', '$2y$10$p3u1z.fVotQL69A9A4WjwOX/THIK/163emDC0dX6KUpGeyr72Befe', 'dan@test.com', 'I am what i am', 35, 'female'),
-(18, 'sam', '$2y$10$eN8dWAoQVwPlpe6N3c3P8eOk7zZNNV7b8qVgwdOEQV5M3cOKiT/Su', 'sam@test.com', NULL, NULL, NULL);
+(18, 'sam', '$2y$10$eN8dWAoQVwPlpe6N3c3P8eOk7zZNNV7b8qVgwdOEQV5M3cOKiT/Su', 'sam@test.com', NULL, NULL, NULL),
+(19, 'Mary', '$2y$10$ANZa/t4GUEoDFk9igOgly.SkuqSCF/KPxt5F3/cmiYEQotQyMFKUe', 'mary@test.co.uk', 'test 1234567890', 60, 'male');
 
 --
 -- Indexes for dumped tables
@@ -206,7 +207,7 @@ ALTER TABLE `sport`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'auto incrementing user_id of each user, unique index',AUTO_INCREMENT=19;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'auto incrementing user_id of each user, unique index',AUTO_INCREMENT=20;
 --
 -- Constraints for dumped tables
 --

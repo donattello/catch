@@ -27,7 +27,7 @@ if(!empty($submitted)) {
     $newEvent->setEventPlace($eventPlace);
     $newEvent->setEventNumberPeople($eventNumberPeople);
 
-    var_dump($newEvent->toArray());
+//    var_dump($newEvent->toArray());
     $newEvent->save();
 
     $_SESSION["message"] = "Your event has been added";
