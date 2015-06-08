@@ -12,7 +12,9 @@
 
 	<div class="event-box">
 		<img src="images/<?= $user->getUserName(); ?>.jpg">
-		<h3><a href="profile.php?id=<?= $user->getUserId() ?>"><?= $user->getUserName(); ?></a></h3>
+		<h3><a href="profile.php?id=<?= $user->getUserId() ?>"><?= $user->getUserName() . " " . $user->getUserAge() . " " . $user->getUserGender(); ?></a></h3>
+
+        
         <div class="clearfix"></div>
 	</div>
 

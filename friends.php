@@ -16,13 +16,14 @@
 
 <section>
 
-                <h3>Friends</h3>  
-                <?php foreach($friends as $friend) { ?>
+<!--    <h3>Friends</h3>  -->
+        <?php foreach($friends as $friend) { ?>
          
     
     <div class="event-box">
+        
 		<img src="images/<?= $friend->getUserName(); ?>.jpg">
-		<h3><a href="profile.php?id=<?= $friend->getUserId() ?>"><?= $friend->getUserName(); ?></a></h3>
+        <h3><a href="profile.php?id=<?= $friend->getUserId() ?>"><?= $friend->getUserName() . " " . $friend->getUserAge() . " " . $friend->getUserGender(); ?></a></h3>
         <div class="clearfix"></div>
 	</div>
      <?php } ?>

@@ -32,7 +32,7 @@ if(!empty($submitted)) {
 
     $_SESSION["message"] = "Your event has been added";
 
-    header("Location: ../index.php");
+    header("Location: ../planner.php");
 	exit;
 
 } else {

@@ -85,8 +85,7 @@
 	            </div><!--end of printAbout-->
 	        </section><!--end of profileAbout-->
             
-            <section>
-                <h3>Friends</h3>  
+            <section>  
                 <?php foreach($friends as $friend) { ?>
                     <h4><?= $friend->getUserName(); ?></h4> 
                 <?php } ?>

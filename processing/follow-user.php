@@ -10,4 +10,8 @@ if(!empty($_GET["id"])){
     $newFollow->setFriendId($_GET["id"]);
     $newFollow->save(); 
 }
+
+$_SESSION["message"] = "You added a new friend";
+    header("Location: ../newmatches.php");
+    exit;
 ?>
