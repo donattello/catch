@@ -32,8 +32,6 @@
 	
 <?php } ?>
 
-
-
  <?php
  	$events = EventQuery::create()
         ->limit(100)

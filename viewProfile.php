@@ -55,7 +55,7 @@ require_once ('generated-conf/config.php'); ?>
 <section class="container viewProf">
     <div class="row">
         <section class="profileImg col-xs-12">
-            <button type="button" class="close glyphicon glyphicon-remove" data-dismiss="modal"></button>
+            <button type="button" class="close glyphicon glyphicon-remove" data-dismiss="modal" onclick="history.go(-1);"></button>
         </section><!--end of profielImg-->
 
         <div class="buttons profile">

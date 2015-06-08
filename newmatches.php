@@ -11,19 +11,10 @@
 <?php foreach($allUsers as $user) { ?>
 
 	<div class="event-box">
-<!--        <img src="images/<? // = $user->getUser()->getUserName(); ?>.jpg">-->
-<!--        <h3><a href="profile.php?id=<? // = $user->getUser()->getUserId() ?>"><? // = $user->getUser()->getUserName() ?></a></h3>-->
-            
-       
-        
-        
-		<h3><?= $user->getUserName() . " " . $user->getUserAge() . " " . $user->getUserGender() ; ?></h3>
-
-
-<!--        <p><?//= $user->getBio(); ?></p>-->
-        <input type="submit" value="Add Friend" />
-
-</div>
+		<img src="images/<?= $user->getUserName(); ?>.jpg">
+		<h3><a href="profile.php?id=<?= $user->getUserId() ?>"><?= $user->getUserName(); ?></a></h3>
+        <div class="clearfix"></div>
+	</div>
 
 <?php } ?>
 

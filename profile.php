@@ -7,10 +7,22 @@
 
 <?php if(!empty($PrintUserProfile)) { ?>
 
+    <?php 
+
+        $friendsIds = FriendQuery::create()
+            ->filterByUserId($userId) 
+            ->select('friend_id')
+            ->find();
+        $friendsIdsArray = $friendsIds->toArray();
+        
+        $friends = UserQuery::create()
+            ->findPKs($friendsIdsArray);
+    ?>
+
 	<section class="container viewProf">
 	    <div class="row">
 	        <section class="profileImg col-xs-12">
-	            <button type="button" class="close glyphicon glyphicon-remove" data-dismiss="modal"></button>
+	            <button type="button" class="close glyphicon glyphicon-remove" data-dismiss="modal" onclick="history.go(-1);"></button>
 	        </section><!--end of profielImg-->
             
             <div class="buttons profile">
@@ -21,7 +33,7 @@
                 </section><!--end of chatIcon-->
 
                 <section class="tick col-xs-2 col-xs-offset-6">
-                    <img src="images/tick1.png" height="30px" width="30px">
+                    <a href="processing/follow-user.php?id=<?= $PrintUserProfile->getUserId() ?>"><img src="images/tick1.png" height="30px" width="30px"></a>
                 </section><!--end of tick1-->
                 <section class="deleteButton col-xs-2">
                     <img src="images/delete.png" height="30px" width="30px">
@@ -72,7 +84,13 @@
 	                <h3><?= $PrintUserProfile->getBio(); ?></h3>
 	            </div><!--end of printAbout-->
 	        </section><!--end of profileAbout-->
-
+            
+            <section>
+                <h3>Friends</h3>  
+                <?php foreach($friends as $friend) { ?>
+                    <h4><?= $friend->getUserName(); ?></h4> 
+                <?php } ?>
+            </section>
 	    </div><!--end of profile row-->
 	</section><!--end of profile-->
 

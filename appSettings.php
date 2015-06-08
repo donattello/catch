@@ -45,7 +45,7 @@
                <div class="row setting">
                     <h3 class="settingDescription col-xs-9">Calendar Reminder</h3>
                     <div class="onOffImg col-xs-3">
-                        <img src="images/onOff.png" width="50px" height="46px">
+                        <img src="images/Off.png" width="50px" height="46px">
                     </div>
                 </div><!--row setting-->
                 <!--<div class="line2">
@@ -67,7 +67,7 @@
                <div class="row setting">
                     <h3 class="settingDescription col-xs-9">Sound Notifications</h3>
                     <div class="onOffImg col-xs-3">
-                        <img src="images/onOff.png" width="50px" height="46px">
+                        <img src="images/Off.png" width="50px" height="46px">
                     </div>
                 </div><!--row setting-->
                 <!--<div class="line2">
@@ -77,7 +77,7 @@
               
             <div class="btnApp col-xs-8 col-xs-offset-2">
 <!--                <button type="button" id="deleteBtn">Delete Account</button>-->
-                <button type="submit" class="btn btn-block" name="delete" id="deleteBtn">Delete</button>
+                <a href="deleted.php"><button type="submit" class="btn btn-block" name="delete" id="deleteBtn">Delete</button></a>
             </div>
            
             </div><!--row-->

@@ -66,6 +66,7 @@
                 </div>
             </div><!--end of form-group people-->
             
+            <input type="hidden" name="submitted" value="submitted">
             <button type="submit" name="add-event" class="btn btn-primary ADButton">Add Event</button>
             
         </form>
