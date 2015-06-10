@@ -22,12 +22,17 @@
     
     <div class="event-box">
         
-		<img src="images/<?= $friend->getUserName(); ?>.jpg">
-        <h3><a href="profile.php?id=<?= $friend->getUserId() ?>"><?= $friend->getUserName() . " " . $friend->getUserAge() . " " . $friend->getUserGender(); ?></a></h3>
+		<img src="images/<?= $friend->getUserName(); ?>.jpg" height="80px" width="80px">
+        <a href="profile.php?id=<?= $friend->getUserId() ?>">
+            <h3><?= $friend->getUserName(); ?></h3>
+            <h5><?= $friend->getUserAge(); ?></h5>
+            <h5><?= $friend->getUserGender(); ?></h5>
+        </a>
         <div class="clearfix"></div>
 	</div>
      <?php } ?>
-            </section>
+    
+ </section>
    
     
 <?php include ("views/_templates/footer.php"); ?>

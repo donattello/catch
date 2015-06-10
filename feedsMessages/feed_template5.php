@@ -10,7 +10,7 @@
         
         <section class="feed col-xs-12">
             <div class="feedAvatar col-xs-3">
-                <img src="images/AvatarTest.png" height="80px" width="80px">
+                <img src="images/edward.jpg" height="80px" width="80px">
             </div><!--end of feedAvatar-->
             
             <div class="feedDescription col-xs-9">

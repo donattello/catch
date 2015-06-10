@@ -40,7 +40,7 @@ $login = new Login();
                     </a>
 
                     <div class="icon nav-icon pull-right col-xs-7">
-                        <a href="newMatches.php" class="col-xs-3">
+                        <a href="newmatches.php" class="col-xs-3">
                             <img src="images/tick.png" width="25px" height="25px" class="image-nav">
                         </a>
 

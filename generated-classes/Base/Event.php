@@ -89,7 +89,6 @@ abstract class Event implements ActiveRecordInterface
 
     /**
      * The value for the event_date field.
-     * Note: this column has a database default value of: (expression) CURRENT_TIMESTAMP
      * @var        \DateTime
      */
     protected $event_date;
@@ -137,22 +136,10 @@ abstract class Event implements ActiveRecordInterface
     protected $commentssScheduledForDeletion = null;
 
     /**
-     * Applies default values to this object.
-     * This method should be called from the object's constructor (or
-     * equivalent initialization method).
-     * @see __construct()
-     */
-    public function applyDefaultValues()
-    {
-    }
-
-    /**
      * Initializes internal state of Base\Event object.
-     * @see applyDefaults()
      */
     public function __construct()
     {
-        $this->applyDefaultValues();
     }
 
     /**
@@ -1764,7 +1751,6 @@ abstract class Event implements ActiveRecordInterface
         $this->event_number_people = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
-        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

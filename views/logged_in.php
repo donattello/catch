@@ -9,7 +9,7 @@
     <div class="row homecontainer">
         
         <div class="containerHome col-xs-11">
-            <a href="newMatches.php">
+            <a href="newmatches.php">
                 <div class="homeButton button1 col-xs-6">
                     <div id="colourHomeButton">
                         <img src="images/tick.png" width="40px" height="40px" class="image">

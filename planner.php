@@ -24,7 +24,7 @@
 <?php foreach($user->getEvents() as $event) { ?>
 
 <div class="event-box">
-		<img src="images/<?= $event->getUser()->getUserName(); ?>.jpg">
+		<img src="images/<?= $event->getUser()->getUserName(); ?>.jpg" height="80px" width="80px">
 		<h3><a href="event.php?id=<?= $event->getId(); ?>"><?= $event->getSport()->getSport(); ?></a></h3>
 		<h5>Posted by: <a href="profile.php?id=<?= $event->getUser()->getUserId() ?>"><?= $event->getUser()->getUserName() ?></a></h5>
 		<p><?= "at " . $event->getEventPlace() . ", " . "on: " . $event->getEventDate('d-m-y H:i') . ", " . $event->getEventNumberPeople() . " more needed"?></p>
@@ -45,7 +45,7 @@
 
 <?php foreach($events as $event) { ?>
 	<div class="event-box">
-		<img src="images/<?= $event->getUser()->getUserName(); ?>.jpg">
+		<img src="images/<?= $event->getUser()->getUserName(); ?>.jpg" height="80px" width="80px">
 		<h3><a href="event.php?id=<?= $event->getId(); ?>"><?= $event->getSport()->getSport(); ?></a></h3>
 		<h5>Posted by: <a href="profile.php?id=<?= $event->getUser()->getUserId() ?>"><?= $event->getUser()->getUserName() ?></a></h5>
 		<p><?= "at " . $event->getEventPlace() . ", " . "on: " . $event->getEventDate('d-m-y H:i') . ", " . $event->getEventNumberPeople() . " more needed"?></p>

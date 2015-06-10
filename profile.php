@@ -21,11 +21,13 @@
 
 	<section class="container viewProf">
 	    <div class="row">
-	        <section class="profileImg col-xs-12">
-	            <button type="button" class="close glyphicon glyphicon-remove" data-dismiss="modal" onclick="history.go(-1);"></button>
-	        </section><!--end of profielImg-->
+	        <section class="profileImg col-xs-6 col-xs-offset-3">
+                <button type="button" class="close glyphicon glyphicon-remove" data-dismiss="modal" onclick="history.go(-1);"></button>
+                <img src="images/<?= $PrintUserProfile->getUserName(); ?>.jpg" class="img-responsive">
             
-            <div class="buttons profile">
+            </section><!--end of profielImg-->
+            
+            <div class="buttons profile col-xs-12">
                 <section class="chatIcon col-xs-2">
                     <a href="chatWindow.php">
                         <img src="images/IconWebChatNew1.png" height="30px" width="30px">
@@ -85,11 +87,13 @@
 	            </div><!--end of printAbout-->
 	        </section><!--end of profileAbout-->
             
+<!--
             <section>  
-                <?php foreach($friends as $friend) { ?>
-                    <h4><?= $friend->getUserName(); ?></h4> 
-                <?php } ?>
+                <?php // foreach($friends as $friend) { ?>
+                    <h4><? // = $friend->getUserName(); ?></h4> 
+                <?php // } ?>
             </section>
+-->
 	    </div><!--end of profile row-->
 	</section><!--end of profile-->
 

@@ -11,6 +11,11 @@
  * DB_USER: user for your database. the user needs to have rights for SELECT, UPDATE, DELETE and INSERT.
  * DB_PASS: the password of the above user
  */
+//define("DB_HOST", "localhost");
+//define("DB_NAME", "gradProject");
+//define("DB_USER", "martinkiss");
+//define("DB_PASS", "Bournemouth123");
+
 define("DB_HOST", "localhost");
 define("DB_NAME", "login");
 define("DB_USER", "root");

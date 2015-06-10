@@ -19,6 +19,7 @@
                 </div>
                 <div class="col-xs-12">
                     <input type="date" name="date" class="text-area" required>
+<!--                    <input type="text" name="date" class="text-area" required>-->
                 </div>
              </div><!--end of form-group date-->
              
@@ -29,6 +30,7 @@
                 </div>
                 <div class="col-xs-12">
                     <input type="time" name="time" class="text-area" required>
+<!--                    <input type="text" name="time" class="text-area" required>-->
                 </div>
             </div><!--end of form-group time-->
              

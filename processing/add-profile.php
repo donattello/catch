@@ -23,7 +23,7 @@ if(!empty($submitted)){
 	    header("Location: ../editProfile.php");
 		exit;
 
-        //|| empty($eventType)
+        // || empty($eventType)
     }
 
     $editUser = UserQuery::create()->findPK($_SESSION["user_id"]);
@@ -35,6 +35,7 @@ if(!empty($submitted)){
     $editUser->setUserAge($age);
     $editUser->setUserGender($gender);
     $editUser->setBio($userBio);
+    //$editUser->setEventType($eventType);
 
     $editUser->save();
 

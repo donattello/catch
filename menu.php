@@ -30,7 +30,7 @@
            
             <!-- because people were asking: "index.php?logout" is just my simplified form of "index.php?logout=true" -->
         <div class="btnApp col-xs-8 col-xs-offset-2">    
-             <button type="submit" class="btn btn-block" name="signOut" id="signOutBtn"><a href="index.php?logout">Sign Out</a></button>
+             <button type="submit" class="btn btn-block" name="signOut" id="signOutBtn"><a href="index.php?logout"><h3>Sign Out</h3></a></button>
         </div>
           
        

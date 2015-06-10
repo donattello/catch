@@ -8,6 +8,10 @@ $manager->setConfiguration(array (
   'dsn' => 'mysql:host=localhost;dbname=login',
   'user' => 'root',
   'password' => 'password',
+    
+//    'dsn' => 'mysql:host=localhost;dbname=gradProject',
+//  'user' => 'martinkiss',
+//  'password' => 'Bournemouth123',
   'attributes' =>
   array (
     'ATTR_EMULATE_PREPARES' => false,

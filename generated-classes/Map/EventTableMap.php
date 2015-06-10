@@ -154,7 +154,7 @@ class EventTableMap extends TableMap
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('event_user_id', 'EventUserId', 'INTEGER', 'user', 'user_id', true, null, null);
         $this->addForeignKey('event_type', 'EventType', 'INTEGER', 'sport', 'id', true, null, null);
-        $this->addColumn('event_date', 'EventDate', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
+        $this->addColumn('event_date', 'EventDate', 'TIMESTAMP', true, null, null);
         $this->addColumn('event_place', 'EventPlace', 'VARCHAR', true, 120, null);
         $this->addColumn('event_number_people', 'EventNumberPeople', 'INTEGER', true, 2, null);
     } // initialize()

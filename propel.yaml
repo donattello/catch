@@ -4,9 +4,14 @@ propel:
           default:
               adapter: mysql
               classname: Propel\Runtime\Connection\ConnectionWrapper
+              
               dsn: "mysql:host=localhost;dbname=login"
               user: root
               password: password
+              
+#              dsn: "mysql:host=localhost;dbname=gradProject"
+#              user: martinkiss
+#              password: Bournemouth123
               attributes:
   runtime:
       defaultConnection: default

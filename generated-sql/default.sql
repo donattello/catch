@@ -37,7 +37,7 @@ CREATE TABLE `event`
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `event_user_id` INTEGER NOT NULL,
     `event_type` INTEGER NOT NULL,
-    `event_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `event_date` DATETIME NOT NULL,
     `event_place` VARCHAR(120) NOT NULL,
     `event_number_people` INTEGER(2) NOT NULL,
     PRIMARY KEY (`id`),

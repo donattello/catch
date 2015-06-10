@@ -21,7 +21,7 @@
             </div><!--eventDiscrioption-->
         </section><!--eventBox-->
         
-        <section class="commentBox col-xs-12">
+        <section class="commentBoxEvent col-xs-12">
             <div class="comment col-xs-10">
                 <input type="text" class="form-control" aria-describedby="basic-addon1" placeholder="write a comment"> 
             </div><!--end of comment-->

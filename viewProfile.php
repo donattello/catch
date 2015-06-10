@@ -5,60 +5,17 @@ require_once ('generated-conf/config.php'); ?>
 
 <?php include "views/_templates/header.php"; ?>
 
-<?php
-
-//              Adding a user into the friend's list
-
-//                  My version
-
-//$userFriends = UserFriendsQuery::create()
-//            ->filterByUserId($_SESSION["user_id"])
-//            ->select('friend') //name of the table in the database
-//            ->find()
-//        return $userFriends->toArray();
-//
-//public static function getFriends() {
-//    $userFriends = UserFriendsQuery::create()
-//        ->filterByUserId(Session::get('user_id'))
-//        ->select('friend') //name of the table in the database?
-//        ->find();
-//    return $userFriends->toArray();
-//}
-
-
-//                      Kyle's version
-
-//$userFollows = UserFollowsQuery::create()
-//			->filterByUserId($_SESSION["user_id"])
-//			->select('friend') //('*follows_user_id* name of table where the ide of friend is saved')
-//			->find();
-//		return $userFollows->toArray();
-
-//public static function getUserFollowsId() {
-//		$userFollows = UserFollowsQuery::create()
-//			->filterByUserId(Session::get('user_id'))
-//			->select('follows_user_id')
-//			->find();
-//			var_dump($userFollows->toArray());
-//		return $userFollows->toArray();
-//	}
-?>
-
-
-
-<!--<input type="submit" value="Add Friend" />-->
-
-
-
 <?php $PrintUserProfile = UserQuery::create()->findPK($_SESSION["user_id"]); ?>
 
 <section class="container viewProf">
     <div class="row">
-        <section class="profileImg col-xs-12">
+        <section class="profileImg col-xs-6 col-xs-offset-3">
             <button type="button" class="close glyphicon glyphicon-remove" data-dismiss="modal" onclick="history.go(-1);"></button>
+            <img src="images/<?= $PrintUserProfile->getUserName(); ?>.jpg" class="img-responsive">
+            
         </section><!--end of profielImg-->
 
-        <div class="buttons profile">
+        <div class="buttons profile col-xs-12">
             <section class="chatIcon col-xs-2">
                 <a href="chatWindow.php">
                     <img src="images/IconWebChatNew1.png" height="30px" width="30px">
